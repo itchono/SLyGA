@@ -1,0 +1,19 @@
+function cart = moe2cartesian(p, f, g, L)
+% cart = MOE2CARTESIAN(p, f, g, L) converts modified equinoctial
+% elements to Cartesian coordinates
+%
+% Works for vectorized inputs on L
+
+% get eccentricity
+e = sqrt(f^2 + g^2);
+
+% get true anomaly
+theta = L - atan2(g, f);
+
+% get radius and perifocal radius
+radius = p ./ (1 + e * cos(theta));
+
+% to get cartesian position, simply put L for the angle (true longitude
+% is true!)
+cart = radius .* [cos(L); sin(L)];
+end
