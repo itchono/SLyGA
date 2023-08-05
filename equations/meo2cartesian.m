@@ -1,5 +1,5 @@
-function cart = moe2cartesian(p, f, g, L)
-% cart = MOE2CARTESIAN(p, f, g, L) converts modified equinoctial
+function cart = meo2cartesian(p, f, g, L)
+% cart = meo2CARTESIAN(p, f, g, L) converts modified equinoctial
 % elements to Cartesian coordinates
 %
 % Works for vectorized inputs as well, but the inputs should be rows
