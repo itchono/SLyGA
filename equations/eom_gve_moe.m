@@ -1,10 +1,8 @@
-function yp = eom_gve_moe(t, y)
+function yp = eom_gve_moe(~, y, f_app)
     p = y(1);
     f = y(2);
     g = y(3);
     L = y(4);
-   
-    f_app = [0; 0];
 
     % Shorthands
     q = 1 + f * cos(L) + g * sin(L);

@@ -1,5 +1,17 @@
-y0 = [6878e3; 0.2; 0.1; 0];
+%% Config
+y0 = [6878e3; 0; 0; 0];
+propagator = @ode45;
+t_span = [0, 86400];
 
-[t, y] = ode113(@eom_gve_moe, [0, 5700], y0);
+%% Run
+[t, y] = propagator(@gnc_stack, t_span, y0);
 
-plot_orbit_moe_vec(y);
+p = y(:, 1);
+
+figure
+plot(t, p);
+
+
+%% Plot
+figure
+plot_orbit_moe_vec(t, y, 120);
