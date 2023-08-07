@@ -1,7 +1,7 @@
 %% Config
 y0 = [6878e3; 0; 0; 0];
 propagator = @ode113;
-t_span = [0, 4e5];
+t_span = [0, 5e5];
 opts = odeset('RelTol',1e-12);
 
 %% Run
@@ -17,7 +17,7 @@ figure
 labels = ["Semi-Major Axis (m)", "f (x-eccentricity)", "g (y-eccentricity)"];
 stackedplot(t/86400, [sma; f; g]', "DisplayLabels", labels);
 
-title("Evolution of Orbital Elements for pi/6 Steering Law");
+title("Evolution of Orbital Elements for basic Steering Law");
 xlabel("Time since vernal equinox (d)")
 
 figure

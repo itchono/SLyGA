@@ -34,7 +34,8 @@ axis equal;
 title("Earth Inertial Coordinates");
 xlabel("x (m)")
 ylabel("y (m)")
-colorbar
+cbar = colorbar;
+ylabel(cbar, "Time (s)")
 
 end
 

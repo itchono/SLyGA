@@ -3,7 +3,10 @@ function yp = gnc_stack(t, y)
 [p, f, g, L] = unpack_meo(y);
 
 % Guidance strategy
-if (mod(L, 2*pi) > pi/6) && (mod(L, 2*pi) < 5*pi/6)
+eff_angle = mod(L - sun_angle(t), 2*pi);
+
+% only thrust while Sun is up
+if (eff_angle > 0) && (eff_angle < pi)
     gamma = 0;
 else
     gamma = pi/2;

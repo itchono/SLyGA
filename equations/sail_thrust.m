@@ -1,17 +1,17 @@
 function acc_lvlh = sail_thrust(t, y, gamma)
 [p, f, g, L] = unpack_meo(y);
-theta = L - atan2(g, f);
 
 % parameters
 P = 9.12e-6;  % N/m^2
 sigma = 0.001; % kg/m^2
 eta = 0.85;
 
-% thrust
-efficiency_coeff = 2*P*eta/sigma;
-angular_coeff = sin(gamma - theta + sun_angle(t)).^2;
-sign_multiplier = sign(cos(gamma - theta + sun_angle(t)));  % VERY IMPORTANT, FIGURE OUT HOW TO GENERALIZE!
+% sail orientation
+alpha = L - pi/2 - gamma - sun_angle(t);
 
-acc_lvlh = efficiency_coeff .* sign_multiplier .* angular_coeff .* [sin(gamma); cos(gamma)];
+% thrust
+efficiency = 2*P*eta/sigma;
+direction = [sin(gamma); cos(gamma)];
+acc_lvlh = efficiency .* sign(cos(alpha)) .* cos(alpha).^2 .* direction;
 
 end
