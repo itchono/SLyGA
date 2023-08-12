@@ -14,8 +14,8 @@ sma = p .* (1-ecc.^2);
 
 %% Plot
 figure
-labels = ["Semi-Major Axis (m)", "f (x-eccentricity)", "g (y-eccentricity)"];
-stackedplot(t/86400, [sma; f; g]', "DisplayLabels", labels);
+labels = ["Semi-Latus Rectum (m)", "Semi-Major Axis (m)", "f (x-eccentricity)", "g (y-eccentricity)"];
+stackedplot(t/86400, [p; sma; f; g]', "DisplayLabels", labels);
 
 title("Evolution of Orbital Elements for basic Steering Law");
 xlabel("Time since vernal equinox (d)")
