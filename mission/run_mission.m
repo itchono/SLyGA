@@ -22,8 +22,12 @@ function [p, f, g, L, t] = run_mission(cfg)
 %       - t: time (s)
 %
 
+
+% Set up termination conditions
+options = odeset(cfg.options, 'Events', @(t, y) mee_convergence(t, y, cfg.y_target));
+
 ode = @(t, y) slyga_ode(t, y, cfg.y_target, cfg.propulsion_model, cfg.steering_law);
-[t, y] = cfg.solver(ode, cfg.t_span, cfg.y0, cfg.options);
+[t, y] = cfg.solver(ode, cfg.t_span, cfg.y0, options);
 [p, f, g, L] = unpack_mee(y');
 
 end
@@ -46,5 +50,11 @@ acceleration = propulsion_model(t, y, gamma);
 % Dynamics
 yp = gve_mee(t, y, acceleration);
 
+end
+
+function [value, isterminal, direction] = mee_convergence(~,y, y_target)
+value = norm(y(1:3) - y_target);
+isterminal = 1;
+direction = 0;
 end
 

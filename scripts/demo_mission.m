@@ -20,9 +20,10 @@ sma = p .* (1-ecc.^2);
 figure
 labels = ["Semi-Latus Rectum (m)", "Semi-Major Axis (m)", "f (x-eccentricity)", "g (y-eccentricity)"];
 stackedplot(t/86400, [p; sma; f; g]', "DisplayLabels", labels);
-
 title("Evolution of Orbital Elements for basic Steering Law");
 xlabel("Time since vernal equinox (d)")
+saveas(gcf,'slyga_elements.pdf')
 
 figure
 plot_orbit_meo_vec(t, [p; f; g; L], 120);
+exportgraphics(gcf,'slyga_orbit_plot.png','Resolution',300)

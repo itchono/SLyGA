@@ -1,2 +1,10 @@
+# MATLAB autosave
 *.asv
 resources/**
+
+# Binary files
+*.mlx
+
+# Images
+*.png
+*.pdf
