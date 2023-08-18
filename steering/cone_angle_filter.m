@@ -1,9 +1,8 @@
-function gamma = simple_steering(t, y, ~)
-% Just increase the energy of the orbit
-[~, ~, ~, L] = unpack_meo(y);
+function gamma = cone_angle_filter(t, y, gamma_candidate)
+% CONE_ANGLE_FILTER  Filter cone angle to put sail at 0 cone angle
+% if the desired steering angle would face towards the sun.
 
-% Orbit-raising steering angle
-gamma_candidate = 0;
+[~, ~, ~, L] = unpack_mee(y);
 
 % Calculate resultant cone angle
 phi_sun = sun_angle(t);
@@ -16,5 +15,4 @@ if cos(alpha) < 0
     gamma = L - phi_sun;
 else
     gamma = gamma_candidate;
-end
 end

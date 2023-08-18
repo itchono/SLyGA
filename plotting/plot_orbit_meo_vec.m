@@ -18,7 +18,7 @@ if nargin == 3
 end
 
 % Extract orbital elements
-[p, f, g, L] = unpack_meo(y);
+[p, f, g, L] = unpack_mee(y);
 
 plot_orbit_meo(p, f, g, L, t_sample)
 

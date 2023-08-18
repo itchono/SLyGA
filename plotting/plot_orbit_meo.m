@@ -9,7 +9,7 @@ function plot_orbit_meo(p, f, g, L, t)
 % colours using sample number
 
 % convert position to Cartesian
-pos = meo2cartesian(p, f, g, L);
+pos = mee2cartesian(p, f, g, L);
 
 % plot the "earth" and the orbit
 plot(0, 0, "bo");
