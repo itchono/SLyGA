@@ -34,3 +34,6 @@ figure
 [p_interp, f_interp, g_interp, L_interp, t_interp] = interp_mee(p, f, g, L, t, 120);
 plot_orbit_mee(p_interp, f_interp, g_interp, L_interp, t_interp);
 exportgraphics(gcf, 'slyga_orbit_plot.png', 'Resolution', 300)
+
+figure
+plot_animated_mee(p_interp, f_interp, g_interp, L_interp);

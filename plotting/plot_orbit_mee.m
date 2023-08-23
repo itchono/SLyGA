@@ -34,7 +34,10 @@ title("Earth Inertial Coordinates");
 xlabel("x (m)")
 ylabel("y (m)")
 cbar = colorbar;
-set(cbar, 'Ticks', sort([max(cbar.Limits), cbar.Ticks]))
+% Try setting maximum timestep; if it doesn't work then silently skip
+try
+    set(cbar, 'Ticks', sort([max(cbar.Limits), cbar.Ticks]))
+end
 
 if nargin == 5
     ylabel(cbar, "Time (s)")
