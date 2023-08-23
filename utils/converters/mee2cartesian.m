@@ -13,7 +13,7 @@ function cart = mee2cartesian(p, f, g, L)
 %       cart - cartesian coordinates (km)
 
 % get eccentricity
-e = sqrt(f.^2 + g.^2);
+e = sqrt(f.^2+g.^2);
 
 % get true anomaly
 theta = L - atan2(g, f);
