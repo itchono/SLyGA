@@ -16,12 +16,12 @@ function acc_lvlh = constant_thrust(~, ~, gamma)
 %
 
 % parameters
-P = 9.12e-6;  % N/m^2
+P = 9.12e-6; % N/m^2
 sigma = 0.001; % kg/m^2
 eta = 0.85;
 
 % thrust
-efficiency = 2*P*eta/sigma;
+efficiency = 2 * P * eta / sigma;
 direction = [sin(gamma); cos(gamma)];
 acc_lvlh = efficiency .* direction;
 

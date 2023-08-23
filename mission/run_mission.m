@@ -52,15 +52,15 @@ yp = gve_mee(t, y, acceleration);
 
 end
 
-function [value, isterminal, direction] = mee_convergence(~,y, y_target)
+function [value, isterminal, direction] = mee_convergence(~, y, y_target)
+% Determines if the orbital parameters are within 1e-6 L2 norm of the
+% target
+TOL = 1e-4;
 
 p_diff_norm = (y(1) - y_target(1)) / y(1);
 raw_val = norm([p_diff_norm, y(2) - y_target(2), y(3) - y_target(3)]);
-TOL = 1e-4;
 
-value = raw_val-TOL;
-
+value = raw_val - TOL;
 isterminal = 1;
 direction = 0;
 end
-

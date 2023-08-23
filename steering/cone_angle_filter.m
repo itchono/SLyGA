@@ -6,7 +6,7 @@ function gamma = cone_angle_filter(t, y, gamma_candidate)
 
 % Calculate resultant cone angle
 phi_sun = sun_angle(t);
-alpha = L - pi/2 - gamma_candidate - phi_sun;
+alpha = L - pi / 2 - gamma_candidate - phi_sun;
 
 % If cone angle would result in negative thrust, produce zero thrust
 % instead

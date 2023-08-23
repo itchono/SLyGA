@@ -4,6 +4,6 @@ function phi_sun = sun_angle(t)
 %   t. t is the time in seconds since the vernal equinox.
 
 T_sun = 31557600; % seconds in a year
-phi_sun = 2*pi*t/T_sun;
+phi_sun = 2 * pi * t / T_sun;
 
 end
