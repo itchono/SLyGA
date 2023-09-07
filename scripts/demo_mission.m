@@ -11,6 +11,7 @@ mission_cfg.options = odeset('RelTol', 1e-6);
 % Set a "MaxStep" of about 1e4 if you're using ode89 or ode78
 
 %% Run
+print_cfg_summary(mission_cfg)  % print out mission info
 [p, f, g, L, t] = run_mission(mission_cfg);
 fprintf("Propagation terminated after %.f seconds with %d steps\n", t(end), length(t));
 
@@ -36,4 +37,5 @@ plot_orbit_mee(p_interp, f_interp, g_interp, L_interp, t_interp);
 exportgraphics(gcf, 'slyga_orbit_plot.png', 'Resolution', 300)
 
 figure
-plot_animated_mee(p_interp, f_interp, g_interp, L_interp);
+[p_interp_c, f_interp_c, g_interp_c, L_interp_c, t_interp_c] = interp_mee(p, f, g, L, t, t(end)/1000);
+plot_osculating_mee(p_interp_c, f_interp_c, g_interp_c, t_interp_c);
