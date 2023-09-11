@@ -27,8 +27,9 @@ function [p, f, g, L, t] = run_mission(cfg)
 options = odeset(cfg.options, 'Events', @(t, y) mee_convergence(t, y, cfg.y_target));
 
 ode = @(t, y) slyga_ode(t, y, cfg.y_target, cfg.propulsion_model, cfg.steering_law);
-[t, y] = cfg.solver(ode, cfg.t_span, cfg.y0, options);
-[p, f, g, L] = unpack_mee(y');
+[t, y] = cfg.solver(ode, cfg.t_span, [cfg.y0; 0], options);
+[p, f, g, L] = unpack_mee(y(:,1:4)');
+fprintf("Total DV expenditure: %.1f m/s\n", y(end, 5));
 
 end
 
@@ -48,14 +49,14 @@ gamma = steering_law(t, y, y_target);
 acceleration = propulsion_model(t, y, gamma);
 
 % Dynamics
-yp = gve_mee(t, y, acceleration);
+yp = [gve_mee(t, y, acceleration); norm(acceleration)];
 
 end
 
 function [value, isterminal, direction] = mee_convergence(~, y, y_target)
 % Determines if the orbital parameters are within 1e-6 L2 norm of the
 % target
-TOL = 1e-4;
+TOL = 1e-3;
 
 p_diff_norm = (y(1) - y_target(1)) / y(1);
 raw_val = norm([p_diff_norm, y(2) - y_target(2), y(3) - y_target(3)]);

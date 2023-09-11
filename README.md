@@ -5,9 +5,11 @@ This repo contains a MATLAB implementation of my undergraduate thesis.
 
 [See my WIP notes for thesis here (late August 2023)](https://github.com/itchono/SLyGA/files/12414725/preliminary_thesis_notes.pdf)
 
-Below is an example of a trajectory I propagated which performs an orbit raising maneuver by toggling the solar sail between a face-on and edge-on orientation.
+Below is an example of a trajectory I propagated which performs an orbit adjusting maneuver using a Lyapunov steering law developed by me.
 
-![image](https://github.com/itchono/SLyGA/assets/54449457/e499e450-79d0-4547-98ee-8c1abb50fb50)
+![trajectory_image](https://github.com/itchono/SLyGA/assets/54449457/2f391ce7-73aa-4965-83db-8b8550743d33)
+![trajectory_animation](https://github.com/itchono/SLyGA/assets/54449457/f84a485c-ad38-45b2-96f6-e4fe2bc4fa68)
+
 
 
 ## Installation and Setup
