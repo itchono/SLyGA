@@ -1,12 +1,14 @@
-function plot_orbit_mee(p, f, g, L, t)
+function plot_orbit_mee(p, f, g, L)
 % plot_orbit_mee(p, f, g, L, t) plots an orbit in modified equinoctial
 % elements. The arguments may be vectorized, but they must be rows if this
 % is the case.
 %
 % Plots the Earth at (0, 0)
 %
-% Accepts an optional time argument for colouring the line, otherwise it
-% colours using sample number
+% Colours based on orbit number
+
+%% Data processing
+orbit_number = floor(L / (2*pi));
 
 % convert position to Cartesian
 pos = mee2cartesian(p, f, g, L);
@@ -19,14 +21,9 @@ x = pos(1, :);
 y = pos(2, :);
 z = zeros(size(x));
 
-if nargin == 5
-    time = t;
-else
-    time = 1:length(x);
-end
 % hack to plot a coloured line
 % https://www.mathworks.com/matlabcentral/answers/5042-how-do-i-vary-color-along-a-2d-line#answer_7057
-surface([x; x], [y; y], [z; z], [time; time], ...
+surface([x; x], [y; y], [z; z], [orbit_number; orbit_number], ...
     'facecol', 'none', ...
     'edgecol', 'interp');
 axis equal;
@@ -39,10 +36,5 @@ try
     set(cbar, 'Ticks', sort([max(cbar.Limits), cbar.Ticks]))
 end
 
-if nargin == 5
-    ylabel(cbar, "Time (s)")
-else
-    ylabel(cbar, "Step Number")
-end
-
+ylabel(cbar, "Orbit Number")
 end
