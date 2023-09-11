@@ -11,9 +11,9 @@ mission_cfg.options = odeset('RelTol', 1e-6);
 % Set a "MaxStep" of about 1e4 if you're using ode89 or ode78
 
 %% Run
-print_cfg_summary(mission_cfg)  % print out mission info
+print_cfg_summary(mission_cfg) % print out mission info
 [p, f, g, L, t] = run_mission(mission_cfg);
-num_orbits = round(L(end)/(2*pi));
+num_orbits = round(L(end)/(2 * pi));
 fprintf("Propagation terminated after %d orbits (%.f seconds) with %d solver steps\n", num_orbits, t(end), length(t));
 
 % get proxy quantities
@@ -34,7 +34,7 @@ saveas(gcf, 'slyga_elements.pdf')
 
 figure
 [p_interp, f_interp, g_interp, L_interp, t_interp] = interp_mee(p, f, g, L, t, 100);
-plot_orbit_mee(p_interp, f_interp, g_interp, L_interp);
+plot_orbit_mee(p_interp, f_interp, g_interp, 0, 0, L_interp);
 exportgraphics(gcf, 'slyga_orbit_plot.png', 'Resolution', 300)
 
 plot_osculating_mee(p, f, g, L);

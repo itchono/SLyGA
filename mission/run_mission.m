@@ -28,7 +28,7 @@ options = odeset(cfg.options, 'Events', @(t, y) mee_convergence(t, y, cfg.y_targ
 
 ode = @(t, y) slyga_ode(t, y, cfg.y_target, cfg.propulsion_model, cfg.steering_law);
 [t, y] = cfg.solver(ode, cfg.t_span, [cfg.y0; 0], options);
-[p, f, g, L] = unpack_mee(y(:,1:4)');
+[p, f, g, L] = unpack_mee(y(:, 1:4)');
 fprintf("Total DV expenditure: %.1f m/s\n", y(end, 5));
 
 end

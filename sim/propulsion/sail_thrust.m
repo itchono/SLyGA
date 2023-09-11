@@ -13,7 +13,7 @@ function acc_lvlh = sail_thrust(t, y, gamma)
 %       acc_lvlh    Acceleration vector (m/s^2)
 %
 
-[~, ~, ~, L] = unpack_mee(y);
+[p, f, g, L] = unpack_mee(y);
 
 % Sail/Sun parameters
 P = 9.12e-6; % N/m^2
@@ -21,12 +21,14 @@ sigma = 0.001; % kg/m^2
 eta = 0.85;
 
 % Calculate Cone Angle
-alpha = L - pi / 2 - gamma - sun_angle(t);
+sc_dir_i = rot_inertial_LVLH(p, f, g, 0, 0, L) * steering2lvlh(gamma, 0);
+sunlight_dir_i = -sun_direction(t);
+c_alpha = dot(sc_dir_i, sunlight_dir_i);
 
 efficiency = 2 * P * eta / sigma;
 direction = [sin(gamma); cos(gamma)];
 
 % Solar sail thrust equation
-acc_lvlh = efficiency .* sign(cos(alpha)) .* cos(alpha).^2 .* direction;
+acc_lvlh = efficiency .* sign(c_alpha) .* c_alpha.^2 .* direction;
 
 end

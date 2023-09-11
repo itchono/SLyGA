@@ -18,8 +18,8 @@ g_hat = y_tgt(3);
 
 q = 1 + f * sin(L) + g * cos(L);
 
-% SCALING: add in 1/p term so that it normalizes properly
-D1 = 2 * (p - p_hat) / p ...
+% SCALING: p by earth radius
+D1 = 2 * (p - p_hat) / 6378e3 ...
     +(f - f_hat) * ((q + 1) / q * cos(L) + f / q) ...
     +(g - g_hat) * ((q + 1) / q * sin(L) + g / q);
 D2 = (f - f_hat) * sin(L) - (g - g_hat) * cos(L);
