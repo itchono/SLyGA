@@ -1,7 +1,7 @@
 function gamma = on_off_steering(t, y, ~)
 % Reference steering law from McInnes 4.4.2.1; to debug simulator
 
-[~, ~, ~, L] = unpack_mee(y);
+[~, ~, ~, ~, ~, L] = unpack_mee(y);
 phi_sun = sun_angle(t);
 gamma_candidate = L - phi_sun - pi / 2;
 

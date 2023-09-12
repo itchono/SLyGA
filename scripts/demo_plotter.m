@@ -7,7 +7,6 @@ k = 0;
 L = linspace(0, 2*pi);
 
 % Control Params
-gamma = 0;
 t = 0;
 L_plot = 2 / 3 * pi;
 

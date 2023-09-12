@@ -1,8 +1,8 @@
-function [p_interp, f_interp, g_interp, L_interp, t_interp] = interp_mee(p, f, g, L, t, points_per_orbit)
+function [p_interp, f_interp, g_interp, h_interp, k_interp, L_interp, t_interp] = interp_mee(p, f, g, h, k, L, t, points_per_orbit)
 % INTERP_MEE Interpolate MEE elements obtained from propagation to have an
 % equal number of points per orbit
-%   [p_interp, f_interp, g_interp, L_interp, t_interp] = interp_mee(p, f, g, L, t, interp_step)
-%  interpolates the MEE elements p, f, g, L obtained from propagation to smooth out the
+%   [p_interp, f_interp, g_interp, h_interp, k_interp, L_interp, t_interp] = interp_mee(p, f, g, h, k, L, t, interp_step)
+%  interpolates the MEE elements p, f, g, h, k, L obtained from propagation to smooth out the
 %  solution, primarily for plotting purposes.
 % if points_per_orbit is not specified, it is set to 50.
 
@@ -16,6 +16,8 @@ L_interp = L(1):L_step:L(end);
 p_interp = interp1(L, p, L_interp);
 f_interp = interp1(L, f, L_interp);
 g_interp = interp1(L, g, L_interp);
+h_interp = interp1(L, h, L_interp);
+k_interp = interp1(L, k, L_interp);
 t_interp = interp1(L, t, L_interp);
 
 end
