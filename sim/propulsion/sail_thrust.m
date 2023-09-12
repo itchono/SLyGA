@@ -18,7 +18,7 @@ function acc_lvlh = sail_thrust(t, y, alpha, beta)
 
 % Sail/Sun parameters
 P = 9.12e-6; % N/m^2
-sigma = 0.001; % kg/m^2
+sigma = 0.01; % kg/m^2
 eta = 0.85;
 
 % Calculate Cone Angle

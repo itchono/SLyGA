@@ -1,12 +1,13 @@
 %% Problem Definition
 % Create a struct for neatness
-mission_cfg.y0 = [20000e3; 0; 0; 0.5; 0; 0];
-mission_cfg.y_target = [25000e3; 0; 0; 0.6; 0];
-mission_cfg.propulsion_model = @sail_thrust;
+mission_cfg.y0 = [20000e3; 0.5; -0.2; 0.5; 0; 0];
+mission_cfg.y_target = [25000e3; 0.2; 0.5; 0; 0.3];
+mission_cfg.propulsion_model = @constant_thrust;
 mission_cfg.steering_law = @lyapunov_steering;
 mission_cfg.solver = @ode113;
 mission_cfg.t_span = [0, 4e7];
 mission_cfg.options = odeset('RelTol', 1e-6);
+mission_cfg.tol = 1e-3;
 
 % Set a "MaxStep" of about 1e4 if you're using ode89 or ode78
 
@@ -16,16 +17,9 @@ print_cfg_summary(mission_cfg) % print out mission info
 num_orbits = round(L(end)/(2 * pi));
 fprintf("Propagation terminated after %d orbits (%.f seconds) with %d solver steps\n", num_orbits, t(end), length(t));
 
-% get proxy quantities
-err = steering_loss([p; f; g; h; k; zeros(1, length(p))], mission_cfg.y_target);
-
 %% Plot
 figure
-labels = ["p (m)", "f", "g", "h", "k", "Err"];
-stackedplot(t/86400, [p; f; g; h; k; err]', "DisplayLabels", labels);
-title("Evolution of Orbital Elements");
-xlabel("Time since vernal equinox (d)")
-grid
+plot_elements(p, f, g, h, k, L, t, mission_cfg.y_target);
 saveas(gcf, 'slyga_elements.pdf')
 
 figure

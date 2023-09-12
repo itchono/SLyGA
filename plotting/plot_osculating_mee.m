@@ -19,10 +19,10 @@ hold on
 cart_sample = mee2cartesian(p(1), f(1), g(1), h(1), k(1), L_sample);
 plot3(cart_sample(1, :), cart_sample(2, :), cart_sample(3, :), "Color", "#EFA42C", "DisplayName", "Initial Orbit", "LineWidth", 2, "LineStyle", ":");
 
-main_orbit = plot3(cart_sample(1, :), cart_sample(2, :),  cart_sample(3, :), "Color", "black", "DisplayName", "Current Orbit", "LineWidth", 2);
+main_orbit = plot3(cart_sample(1, :), cart_sample(2, :), cart_sample(3, :), "Color", "black", "DisplayName", "Current Orbit", "LineWidth", 2);
 
 cart_sample = mee2cartesian(p(end), f(end), g(end), h(end), k(end), L_sample);
-plot3(cart_sample(1, :), cart_sample(2, :),  cart_sample(3, :), "Color", "#27CC53", "DisplayName", "Final Orbit", "LineWidth", 2, "LineStyle", ":");
+plot3(cart_sample(1, :), cart_sample(2, :), cart_sample(3, :), "Color", "#27CC53", "DisplayName", "Final Orbit", "LineWidth", 2, "LineStyle", ":");
 
 axis equal
 view(3)

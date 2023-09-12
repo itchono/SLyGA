@@ -17,9 +17,9 @@ c_cone_ang = dot(sc_dir_i, sunlight_dir_i);
 if c_cone_ang < 0
     % Point sail edge-on to produce ZERO THRUST
     % Since the Sun is ecliptic, we can just point +90 degrees rot in xy
-    C3_90 = [0 -1 0;
-            1 0 0;
-            0 0 1];
+    C3_90 = [0, -1, 0; ...
+        1, 0, 0; ...
+        0, 0, 1];
     to_point_inertial = C3_90 * sunlight_dir_i;
     to_point_lvlh = COI * to_point_inertial;
     beta = acos(to_point_lvlh(3));

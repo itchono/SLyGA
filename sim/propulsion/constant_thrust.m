@@ -18,7 +18,7 @@ function acc_lvlh = constant_thrust(~, ~, alpha, beta)
 
 % parameters
 P = 9.12e-6; % N/m^2
-sigma = 0.001; % kg/m^2
+sigma = 0.01; % kg/m^2
 eta = 0.85;
 
 % thrust

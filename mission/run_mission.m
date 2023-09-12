@@ -26,7 +26,7 @@ function [p, f, g, h, k, L, t] = run_mission(cfg)
 
 
 % Set up termination conditions
-options = odeset(cfg.options, 'Events', @(t, y) mee_convergence(t, y, cfg.y_target));
+options = odeset(cfg.options, 'Events', @(t, y) mee_convergence(t, y, cfg.y_target, cfg.tol));
 
 ode = @(t, y) slyga_ode(t, y, cfg.y_target, cfg.propulsion_model, cfg.steering_law);
 [t, y] = cfg.solver(ode, cfg.t_span, [cfg.y0; 0], options);
@@ -47,6 +47,11 @@ function yp = slyga_ode(t, y, y_target, propulsion_model, steering_law)
 % GNC
 [alpha, beta] = steering_law(t, y, y_target);
 
+% Filter cone angle if needed
+if func2str(propulsion_model) == "sail_thrust"
+    [alpha, beta] = cone_angle_filter(t, y, alpha, beta);
+end
+
 % Propulsion
 acceleration = propulsion_model(t, y, alpha, beta);
 
@@ -55,11 +60,10 @@ yp = [gve_mee(t, y, acceleration); norm(acceleration)];
 
 end
 
-function [value, isterminal, direction] = mee_convergence(~, y, y_target)
+function [value, isterminal, direction] = mee_convergence(~, y, y_target, tol)
 % Determines if the orbital parameters are within TOL L2 norm of the
 % target
-TOL = 1e-3;
-value = steering_loss(y, y_target) - TOL;
+value = steering_loss(y, y_target) - tol;
 isterminal = 1;
 direction = 0;
 end
