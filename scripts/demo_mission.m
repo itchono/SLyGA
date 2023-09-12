@@ -33,4 +33,4 @@ figure
 plot_orbit_mee(p_interp, f_interp, g_interp, h_interp, k_interp, L_interp);
 exportgraphics(gcf, 'slyga_orbit_plot.png', 'Resolution', 300)
 
-plot_osculating_mee(p, f, g, L);
+plot_osculating_mee(p, f, g, h, k, L);

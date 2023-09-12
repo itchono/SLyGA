@@ -25,7 +25,7 @@ D1 = 2 * (p - p_hat) / 6378e3 ...
     +(f - f_hat) * ((q + 1) / q * cos(L) + f / q) ...
     +(g - g_hat) * ((q + 1) / q * sin(L) + g / q);
 D2 = (f - f_hat) * sin(L) - (g - g_hat) * cos(L);
-D3 = -g/q * (f-f_hat) * (h*sin(L) - k*cos(L)) + f/q * (g-g_hat) * (h*sin(L) - k*cos(L)) + 2 * (h-h_hat) + 2*(k-k_hat);
+D3 = -g/q * (f-f_hat) * (h*sin(L) - k*cos(L)) + f/q * (g-g_hat) * (h*sin(L) - k*cos(L)) + 2 * cos(L) * (h-h_hat) + 2 * sin(L) *(k-k_hat);
 
 % Optimal steering angle
 alpha_opt = atan2(-D2, -D1);
