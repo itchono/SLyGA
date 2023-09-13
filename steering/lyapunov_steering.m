@@ -32,6 +32,6 @@ D3 = -g ./ q .* (f - f_hat) .* (h .* sin(L) - k .* cos(L)) ...
 
 % Optimal steering angles
 alpha = atan2(-D2, -D1);
-beta = atan(-D3./sqrt(D1.^2+D2.^2));
+beta = atan2(-D3, sqrt(D1.^2+D2.^2));  % atan2 for stability (0/0 case)
 
 end
