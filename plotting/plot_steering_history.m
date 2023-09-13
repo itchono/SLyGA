@@ -11,7 +11,7 @@ for j = 1:length(t)
     [alpha_f(j), beta_f(j)] = cone_angle_filter(t(j), y(:, j), alpha(j), beta(j));
 end
 
-
+%% Plot
 subplot(311)
 plot(t/86400, rad2deg(alpha), "LineWidth", 1)
 hold on

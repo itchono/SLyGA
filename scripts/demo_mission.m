@@ -5,7 +5,7 @@ mission_cfg.y_target = [25000e3; 0.2; 0.5; 0; 0.3];
 mission_cfg.propulsion_model = @sail_thrust;
 mission_cfg.steering_law = @lyapunov_steering;
 mission_cfg.solver = @ode113;
-mission_cfg.t_span = [0, 1e5];
+mission_cfg.t_span = [0, 6e7];
 mission_cfg.options = odeset('RelTol', 1e-6);
 mission_cfg.tol = 1e-3;
 
