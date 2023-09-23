@@ -1,8 +1,10 @@
-function plot_osculating_mee(p, f, g, h, k, L)
-% Expect p, f, g, L to each be (1, N) vectors
+function plot_osculating_mee(y)
+% Expect y to be (6, N)
 % no need to interpolate vectors unless you have VERY big skips in L
 % Reference: https://www.mathworks.com/help/matlab/ref/getframe.html
 % Splits by orbit number
+
+[p, f, g, h, k, L] = unpack_mee(y);
 
 %% Data processing
 ind_orbits = find(diff(mod(L, 2*pi)) < 0);

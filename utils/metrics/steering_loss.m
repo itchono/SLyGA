@@ -1,4 +1,5 @@
 function err = steering_loss(y, y_target)
+% Steering loss to target element set
 
 [p, f, g, h, k, ~] = unpack_mee(y);
 

@@ -34,11 +34,13 @@ Currently, there are two propulsion models implemented:
 1. Constant thrust - thrusts in the direction of the sail normal vector with a constant magnitude
 2. Solar sail - thrusts in the direction of the sail normal vector with a magnitude dependent on cone angle
 
-### `mission` - High Level Mission Runner
-Connects all of the low-level ODEs and guidance stack together.
+`mission.m` connects all of the low-level ODEs and guidance stack together.
 
 ### `plotting` - Plotting Functions
 Plotting from Modified Equinoctial Elements (MEEs).
+
+### `printing` - Printing Functions
+Displaying a summary of pre-mission and post-mission information
 
 ### `utils` - Utility Functions
 This folder includes functions for converting between coordinate frames, computing orbital elements, and other miscellaneous functions.

@@ -1,27 +1,32 @@
-function [alpha, beta] = cone_angle_filter(t, y, alpha_c, beta_c)
+function [alpha, beta] = cone_angle_filter(t, y, alpha_star, beta_star)
 % CONE_ANGLE_FILTER  Filter cone angle to put sail at 0 cone angle
 % if the desired steering angle would face towards the sun.
 
+% Threshold angle
+kappa_t = deg2rad(90);
+kappa_n = deg2rad(90);
+
 [p, f, g, h, k, L] = unpack_mee(y);
 
-% Calculate resultant cone angle
-sc_dir_lvlh = steering2lvlh(alpha_c, beta_c);
+% Calculate resultant cone angle from attitude
 CIO = rot_inertial_LVLH(p, f, g, h, k, L);
 COI = CIO';
-sc_dir_i = CIO * sc_dir_lvlh;
-sunlight_dir_i = -sun_direction(t);
-c_cone_ang = dot(sc_dir_i, sunlight_dir_i);
+n_star_i = CIO *  steering2lvlh(alpha_star, beta_star);
+u_i = -sun_direction(t);
+c_cone_ang = dot(n_star_i, u_i);
 
-% If cone angle would result in negative thrust, produce zero thrust
-% instead
-if c_cone_ang < 0
-    % Point sail edge-on to produce ZERO THRUST
-    % Since the Sun is ecliptic, we can just point +90 degrees rot in xy
-    to_point_inertial = [sunlight_dir_i(2); -sunlight_dir_i(1); sunlight_dir_i(3)];
-    to_point_lvlh = COI * to_point_inertial;
-    beta = asin(to_point_lvlh(3));
-    alpha = atan2(to_point_lvlh(1), to_point_lvlh(2));
+% re-orient sail if needed
+if c_cone_ang < cos(kappa_n)
+    % Zero thrust, if we're pointing definitely the wrong way
+    b_i = cross(u_i, cross(n_star_i, u_i));
+    [alpha, beta] = lvlh2steering(COI * b_i);
+elseif c_cone_ang < cos(kappa_t)
+    % Degraded thrust, if we're between kappa_t and kappa_n
+    % vector in plane of u_i and n_star, but orthogonal to u_i
+    b_i = cross(u_i, cross(n_star_i, u_i));
+    n_prime_i = cos(kappa_t) * u_i + sin(kappa_t) * b_i;
+    [alpha, beta] = lvlh2steering(COI * n_prime_i);
 else
-    alpha = alpha_c;
-    beta = beta_c;
+    alpha = alpha_star;
+    beta = beta_star;
 end

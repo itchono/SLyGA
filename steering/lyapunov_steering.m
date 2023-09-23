@@ -30,7 +30,7 @@ D3 = -g ./ q .* (f - f_hat) .* (h .* sin(L) - k .* cos(L)) ...
     +2 .* (sqrt(1-g.^2) + f) ./ q .* cos(L) .* (h - h_hat) ...
     +2 .* (sqrt(1-f.^2) + g) ./ q .* sin(L) .* (k - k_hat);
 
-% Optimal steering angles
+% Optimal steering angles)
 alpha = atan2(-D2, -D1);
 beta = atan2(-D3, sqrt(D1.^2+D2.^2));  % atan2 for stability (0/0 case)
 

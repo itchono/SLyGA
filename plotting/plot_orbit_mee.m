@@ -1,13 +1,15 @@
-function plot_orbit_mee(p, f, g, h, k, L)
-% plot_orbit_mee(p, f, g, h, k, L) plots an orbit in modified equinoctial
+function plot_orbit_mee(y)
+% plot_orbit_mee(y) plots an orbit in modified equinoctial
 % elements. The arguments may be vectorized, but they must be rows if this
-% is the case.
+% is the case (i.e. (6, N))
 %
 % Plots the Earth at (0, 0)
 %
 % Colours based on orbit number
 
 %% Data processing
+[p, f, g, h, k, L] = unpack_mee(y);
+
 orbit_number = floor(L/(2 * pi));
 
 % convert position to Cartesian

@@ -1,7 +1,6 @@
-function plot_steering_history(p, f, g, h, k, L, t, y_target)
+function plot_steering_history(y, t, y_target)
 %% Preprocessing
-err = steering_loss([p; f; g; h; k; zeros(1, length(p))], y_target);
-y = [p; f; g; h; k; L];
+err = steering_loss(y, y_target);
 [alpha, beta] = lyapunov_steering(t, y, y_target);
 
 alpha_f = zeros(size(alpha));

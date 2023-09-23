@@ -1,4 +1,4 @@
-function [p, f, g, h, k, L, t] = run_mission(cfg)
+function [y, t, dv] = run_mission(cfg)
 % RUN_MISSION
 %
 %   RUN_MISSION(cfg)
@@ -15,23 +15,24 @@ function [p, f, g, h, k, L, t] = run_mission(cfg)
 %       - options: options for the ode solver
 %
 %   Outputs:
-%       - p: semi-latus rectum (m)
-%       - f: f-eccentricity
-%       - g: g-eccentricity
-%       - h: h-parameter
-%       - k: k-parameter
-%       - L: true longitude (rad)
+%       - y: (6, N) array of
+%           - p: semi-latus rectum (m)
+%           - f: f-eccentricity
+%           - g: g-eccentricity
+%           - h: h-parameter
+%           - k: k-parameter
+%           - L: true longitude (rad)
 %       - t: time (s)
+%       - dv: delta-v expended (m/s)
 %
-
 
 % Set up termination conditions
 options = odeset(cfg.options, 'Events', @(t, y) mee_convergence(t, y, cfg.y_target, cfg.tol));
 
 ode = @(t, y) slyga_ode(t, y, cfg.y_target, cfg.propulsion_model, cfg.steering_law);
-[t, y] = cfg.solver(ode, cfg.t_span, [cfg.y0; 0], options);
-[p, f, g, h, k, L] = unpack_mee(y(:, 1:6)');
-fprintf("Total DV expenditure: %.1f m/s\n", y(end, end));
+[t, y_raw] = cfg.solver(ode, cfg.t_span, [cfg.y0; 0], options);
+y = y_raw(:, 1:6)';
+dv = y_raw(:, 7);
 
 end
 
