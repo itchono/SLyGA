@@ -7,7 +7,7 @@ alpha_f = zeros(size(alpha));
 beta_f = zeros(size(beta));
 
 for j = 1:length(t)
-    [alpha_f(j), beta_f(j)] = cone_angle_filter(t(j), y(:, j), alpha(j), beta(j));
+    [alpha_f(j), beta_f(j)] = ndf_adaptation(t(j), y(:, j), alpha(j), beta(j));
 end
 
 %% Plot
@@ -25,8 +25,8 @@ subplot(312)
 plot(t/86400, rad2deg(alpha_f), "LineWidth", 1)
 hold on
 plot(t/86400, rad2deg(beta_f), "LineWidth", 1)
-legend("filt alpha", "filt beta")
-ylabel("Filtered Steering Angles")
+legend("Alpha", "Beta")
+ylabel("Adapted Steering Angles")
 grid
 
 

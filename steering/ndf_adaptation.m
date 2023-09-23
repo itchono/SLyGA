@@ -1,10 +1,10 @@
-function [alpha, beta] = cone_angle_filter(t, y, alpha_star, beta_star)
-% CONE_ANGLE_FILTER  Filter cone angle to put sail at 0 cone angle
-% if the desired steering angle would face towards the sun.
+function [alpha, beta] = ndf_adaptation(t, y, alpha_star, beta_star)
+% NDF_ADAPTATION  generate new steering angles if the original target
+% angles are not possible with a solar sail
 
 % Threshold angle
-kappa_t = deg2rad(90);
-kappa_n = deg2rad(90);
+kappa_d = deg2rad(50);  % degraded guidance threshold
+kappa_f = deg2rad(91);  % feathering threshold
 
 [p, f, g, h, k, L] = unpack_mee(y);
 
@@ -16,15 +16,15 @@ u_i = -sun_direction(t);
 c_cone_ang = dot(n_star_i, u_i);
 
 % re-orient sail if needed
-if c_cone_ang < cos(kappa_n)
-    % Zero thrust, if we're pointing definitely the wrong way
+if c_cone_ang < cos(kappa_f)
+    % Feather the sail if we're below kappa_f
     b_i = cross(u_i, cross(n_star_i, u_i));
     [alpha, beta] = lvlh2steering(COI * b_i);
-elseif c_cone_ang < cos(kappa_t)
-    % Degraded thrust, if we're between kappa_t and kappa_n
+elseif c_cone_ang < cos(kappa_d)
+    % Degraded guidance, if we're between kappa_d and kappa_f
     % vector in plane of u_i and n_star, but orthogonal to u_i
     b_i = cross(u_i, cross(n_star_i, u_i));
-    n_prime_i = cos(kappa_t) * u_i + sin(kappa_t) * b_i;
+    n_prime_i = cos(kappa_d) * u_i + sin(kappa_d) * b_i;
     [alpha, beta] = lvlh2steering(COI * n_prime_i);
 else
     alpha = alpha_star;

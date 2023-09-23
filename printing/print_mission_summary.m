@@ -5,12 +5,13 @@ function print_mission_summary(y, t, dv, mission_cfg)
 
 num_orbits = round(L(end)/(2 * pi));
 final_err = steering_loss([p(end); f(end); g(end); h(end); k(end); L(end)], mission_cfg.y_target);
-fprintf("Propagation terminated after %d orbits (%.f seconds) with %d solver steps\n", num_orbits, t(end), length(t));
 if final_err < mission_cfg.tol
-    fprintf("CONVERGED: ")
+    fprintf("   _____ ____  _   ___      ________ _____   _____ ______ _____  _ \n  / ____/ __ \\| \\ | \\ \\    / /  ____|  __ \\ / ____|  ____|  __ \\| |\n | |   | |  | |  \\| |\\ \\  / /| |__  | |__) | |  __| |__  | |  | | |\n | |   | |  | | . ` | \\ \\/ / |  __| |  _  /| | |_ |  __| | |  | | |\n | |___| |__| | |\\  |  \\  /  | |____| | \\ \\| |__| | |____| |__| |_|\n  \\_____\\____/|_| \\_|   \\/   |______|_|  \\_\\\\_____|______|_____/(_)\n")
 else
-    fprintf("NOT CONVERGED: ")
+    fprintf("NOT CONVERGED!!\n")
 end
-fprintf(" achieved error of %g (vs tolerance %g)\n", final_err, mission_cfg.tol);
+fprintf("Achieved error of %g (vs tolerance %g) after %d orbits (%.f seconds) with %d solver steps\n",...
+    final_err, mission_cfg.tol, num_orbits, t(end), length(t));
+
 fprintf("Total DV expenditure: %.1f m/s\n", dv(end));
 end
