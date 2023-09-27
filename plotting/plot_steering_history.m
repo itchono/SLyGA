@@ -7,7 +7,7 @@ alpha_f = zeros(size(alpha));
 beta_f = zeros(size(beta));
 
 for j = 1:length(t)
-    [alpha_f(j), beta_f(j)] = ndf_adaptation(t(j), y(:, j), alpha(j), beta(j));
+    [alpha_f(j), beta_f(j)] = ndf_heuristic(t(j), y(:, j), alpha(j), beta(j));
 end
 
 %% Plot

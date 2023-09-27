@@ -48,9 +48,9 @@ function yp = slyga_ode(t, y, y_target, propulsion_model, steering_law)
 % GNC
 [alpha, beta] = steering_law(t, y, y_target);
 
-% Perform NDF adaptation if needed
+% Adjust targeted steering angle if needed
 if func2str(propulsion_model) == "sail_thrust"
-    [alpha, beta] = ndf_adaptation(t, y, alpha, beta);
+    [alpha, beta] = ndf_heuristic(t, y, alpha, beta);
 end
 
 % Propulsion
