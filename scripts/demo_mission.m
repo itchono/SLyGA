@@ -16,7 +16,7 @@ print_cfg_summary(mission_cfg) % print out mission info
 [y, t, dv] = run_mission(mission_cfg);
 print_mission_summary(y, t, dv, mission_cfg)
 
-% %% Plot
-% fprintf("Press `enter` to show plots...\n")
-% pause
-% plot_everything(y, t, mission_cfg.y_target)
+%% Plot
+fprintf("Press `enter` to show plots...\n")
+pause
+plot_everything(y, t, mission_cfg.y_target)

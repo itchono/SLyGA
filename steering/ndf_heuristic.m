@@ -12,7 +12,8 @@ kappa_f = deg2rad(91);  % feathering threshold
 CIO = rot_inertial_LVLH(p, f, g, h, k, L);
 COI = CIO';
 n_star_i = CIO *  steering2lvlh(alpha_star, beta_star);
-u_i = -sun_direction(t);
+[~, u_sun] = sun_position(t);
+u_i = -u_sun;
 c_cone_ang = dot(n_star_i, u_i);
 
 % re-orient sail if needed
