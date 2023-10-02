@@ -1,5 +1,14 @@
 function err = steering_loss(y, y_target)
-% Steering loss to target element set
+%STEERING_LOSS  Steering loss to target element set
+%  err = steering_loss(y, y_target) computes the steering loss to the
+%  target element set y_target from the current element set y.
+%
+%  Inputs:
+%    y = [p; f; g; h; k; L] = current element set
+%    y_target = [p; f; g; h; k] = target element set
+%
+%  Outputs:
+%    err = steering loss to target element set
 
 [p, f, g, h, k, ~] = unpack_mee(y);
 

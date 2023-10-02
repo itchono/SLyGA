@@ -23,9 +23,9 @@ Below is an example of a trajectory I propagated which performs an orbit adjusti
 
 ## Code Structure
 ### `steering` - Steering Algorithms
-This code computes the LVLH steering angle in which to point the sail. There are currently two algorithms implemented:
-1. Simple Steering - attempts to point the sail prograde unless it produces backwards thrust, thereby always increasing the energy of the orbit
-2. Lyapunov Steering - guidance law to converge towards a desired set of MEE elements
+This code computes the LVLH steering angle in which to point the sail. There are currently two components to the steering algorithm:
+1. Lyapunov steering law - computes an optimal steering angle which decreases the control-Lyapunov potential function as quickly as possible
+2. NDF Heuristic - accounts for the position of the Sun, and adapts the steering angle proposed by the Lyapunov steering law to something a solar sail can achieve. e.g. Feathering the sail if the desired pointing direction is directly toward the Sun.
 
 ### `sim` - Simulator
 This folder includes equations of motion, ephemerides, and propulsion models.
@@ -34,7 +34,7 @@ Currently, there are two propulsion models implemented:
 1. Constant thrust - thrusts in the direction of the sail normal vector with a constant magnitude
 2. Solar sail - thrusts in the direction of the sail normal vector with a magnitude dependent on cone angle
 
-`mission.m` connects all of the low-level ODEs and guidance stack together.
+`run_mission.m` connects all of the low-level ODEs and guidance stack together.
 
 ### `plotting` - Plotting Functions
 Plotting from Modified Equinoctial Elements (MEEs).

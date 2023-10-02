@@ -1,6 +1,17 @@
 function occluded = in_eclipse(r_spacecraft, r_sun, radius_body)
-% Determines occlusion
-% Derived from Curtis Orbital Mechanics 2014; Algorithm 
+% OCCULUDED = IN_ECLIPSE(R_SPACECRAFT, R_SUN, RADIUS_BODY)
+%
+%   Determines if a spacecraft is in eclipse. Returns 1 if
+%   the spacecraft is in eclipse, 0 otherwise.
+%
+%  Inputs:
+%    r_spacecraft   - Position of the spacecraft [m]
+%    r_sun          - Position of the sun [m]
+%    radius_body    - Radius of the body [m]
+%
+%  Outputs:
+%    occluded       - Boolean, 1 if spacecraft is in eclipse, 0 otherwise
+% Derived from Curtis Orbital Mechanics 2014
 
 mag_r_spacecraft = vecnorm(r_spacecraft, 2, 1);
 mag_r_sun = vecnorm(r_sun, 2, 1);

@@ -3,6 +3,12 @@ function [p, f, g, h, k, L] = unpack_mee(m)
 %
 %   [p, f, g, h, k, L] = UNPACK_MEE(m) unpacks the MEE vector m into the
 %   individual elements p, f, g, h, k, L
+%
+% Inputs:
+%   m - MEE vector
+%
+% Outputs:
+%   p, f, g, h, k, L - individual elements of MEE vector
 
 % Unpacks either 1-D or 2-D array into individual elements or rows.
 p = m(1, :);

@@ -1,6 +1,15 @@
 function [pos, dir] = sun_position(t)
-% Returns a 3D vector of sun direction in an ECI frame
-% t is the number of seconds after vernal equinox
+
+% SUN_POSITION - Returns the position of the sun in the ECI frame
+%
+% [pos, dir] = sun_position(t)
+%
+% Inputs:
+%   t - Number of seconds after vernal equinox
+%
+% Outputs:
+%   pos - Position of the sun in the ECI frame (m)
+%   dir - Direction of the sun in the ECI frame (unit vector)
 
 epsilon = 23.439; % obliquity of the ecliptic
 
