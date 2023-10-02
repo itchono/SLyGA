@@ -1,4 +1,4 @@
-function [p, f, g, L, t] = run_mission(cfg)
+function [y, t, dv] = run_mission(cfg)
 % RUN_MISSION
 %
 %   RUN_MISSION(cfg)
@@ -15,21 +15,24 @@ function [p, f, g, L, t] = run_mission(cfg)
 %       - options: options for the ode solver
 %
 %   Outputs:
-%       - p: semi-latus rectum (m)
-%       - f: f-eccentricity
-%       - g: g-eccentricity
-%       - L: true longitude (rad)
+%       - y: (6, N) array of
+%           - p: semi-latus rectum (m)
+%           - f: f-eccentricity
+%           - g: g-eccentricity
+%           - h: h-parameter
+%           - k: k-parameter
+%           - L: true longitude (rad)
 %       - t: time (s)
+%       - dv: delta-v expended (m/s)
 %
 
-
 % Set up termination conditions
-options = odeset(cfg.options, 'Events', @(t, y) mee_convergence(t, y, cfg.y_target));
+options = odeset(cfg.options, 'Events', @(t, y) mee_convergence(t, y, cfg.y_target, cfg.tol));
 
 ode = @(t, y) slyga_ode(t, y, cfg.y_target, cfg.propulsion_model, cfg.steering_law);
-[t, y] = cfg.solver(ode, cfg.t_span, [cfg.y0; 0], options);
-[p, f, g, L] = unpack_mee(y(:,1:4)');
-fprintf("Total DV expenditure: %.1f m/s\n", y(end, 5));
+[t, y_raw] = cfg.solver(ode, cfg.t_span, [cfg.y0; 0], options);
+y = y_raw(:, 1:6)';
+dv = y_raw(:, 7);
 
 end
 
@@ -43,25 +46,25 @@ function yp = slyga_ode(t, y, y_target, propulsion_model, steering_law)
 %   vector. YP is the time derivative of Y. Y_TARGET is the target state (shape [3, 1])
 
 % GNC
-gamma = steering_law(t, y, y_target);
+[alpha, beta] = steering_law(t, y, y_target);
+
+% Adjust targeted steering angle if needed
+if func2str(propulsion_model) == "sail_thrust"
+    [alpha, beta] = ndf_heuristic(t, y, alpha, beta);
+end
 
 % Propulsion
-acceleration = propulsion_model(t, y, gamma);
+acceleration = propulsion_model(t, y, alpha, beta);
 
 % Dynamics
 yp = [gve_mee(t, y, acceleration); norm(acceleration)];
 
 end
 
-function [value, isterminal, direction] = mee_convergence(~, y, y_target)
-% Determines if the orbital parameters are within 1e-6 L2 norm of the
+function [value, isterminal, direction] = mee_convergence(~, y, y_target, tol)
+% Determines if the orbital parameters are within TOL L2 norm of the
 % target
-TOL = 1e-3;
-
-p_diff_norm = (y(1) - y_target(1)) / y(1);
-raw_val = norm([p_diff_norm, y(2) - y_target(2), y(3) - y_target(3)]);
-
-value = raw_val - TOL;
+value = steering_loss(y, y_target) - tol;
 isterminal = 1;
 direction = 0;
 end
