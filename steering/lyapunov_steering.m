@@ -18,7 +18,7 @@ g_hat = y_tgt(3);
 h_hat = y_tgt(4);
 k_hat = y_tgt(5);
 
-q = 1 + f .* sin(L) + g .* cos(L);
+q = 1 + f .* cos(L) + g .* sin(L);
 
 % SCALING: p by earth radius
 D1 = 2 .* (p - p_hat) ./ 6378e3 ...

@@ -15,7 +15,7 @@ function yp = gve_mee(~, y, f_app)
 [p, f, g, h, k, L] = unpack_mee(y);
 
 % Shorthands
-q = 1 + f * cos(L) + g * sin(L);
+q = 1 + f .* cos(L) + g .* sin(L);
 mu = 3.986e14;
 
 % Implement differential equation
