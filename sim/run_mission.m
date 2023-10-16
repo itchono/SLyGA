@@ -30,7 +30,13 @@ function [y, t, dv] = run_mission(cfg)
 options = odeset(cfg.options, 'Events', @(t, y) mee_convergence(t, y, cfg.y_target, cfg.tol));
 
 ode = @(t, y) slyga_ode(t, y, cfg.y_target, cfg.propulsion_model, cfg.steering_law);
-[t, y_raw] = cfg.solver(ode, cfg.t_span, [cfg.y0; 0], options);
+if func2str(cfg.solver) == "ode5"
+    t = linspace(cfg.t_span(1), cfg.t_span(2), 1e4);
+    y_raw = cfg.solver(ode, t, [cfg.y0; 0]);
+else
+    [t, y_raw] = cfg.solver(ode, cfg.t_span, [cfg.y0; 0], options);
+end
+
 y = y_raw(:, 1:6)';
 dv = y_raw(:, 7);
 
