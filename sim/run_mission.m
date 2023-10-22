@@ -29,6 +29,9 @@ function [y, t, dv] = run_mission(cfg)
 % Set up termination conditions
 options = odeset(cfg.options, 'Events', @(t, y) mee_convergence(t, y, cfg.y_target, cfg.tol));
 
+% Scale initial conditions
+cfg.y0 = [cfg.y0(1) / 6378e3; cfg.y0(2:end)];
+
 ode = @(t, y) slyga_ode(t, y, cfg.y_target, cfg.propulsion_model, cfg.steering_law);
 if func2str(cfg.solver) == "ode5"
     t = linspace(cfg.t_span(1), cfg.t_span(2), 1e4);
@@ -37,7 +40,9 @@ else
     [t, y_raw] = cfg.solver(ode, cfg.t_span, [cfg.y0; 0], options);
 end
 
+% post-processing scaling
 y = y_raw(:, 1:6)';
+y(1, :) = y(1, :) * 6378e3;
 dv = y_raw(:, 7);
 
 end
@@ -50,6 +55,9 @@ function yp = slyga_ode(t, y, y_target, propulsion_model, steering_law)
 %   function that computes the thrust acceleration vector. STEERING_LAW is
 %   a function handle to the function that computes the steering angle
 %   vector. YP is the time derivative of Y. Y_TARGET is the target state (shape [3, 1])
+
+% Scaling
+y = [y(1) * 6378e3; y(2:end)];
 
 % GNC
 [alpha, beta] = steering_law(t, y, y_target);
@@ -64,12 +72,14 @@ acceleration = propulsion_model(t, y, alpha, beta);
 
 % Dynamics
 yp = [gve_mee(t, y, acceleration); norm(acceleration)];
+yp(1) = yp(1) / 6378e3;
 
 end
 
 function [value, isterminal, direction] = mee_convergence(~, y, y_target, tol)
 % Determines if the orbital parameters are within TOL L2 norm of the
 % target
+y(1) = y(1) * 6378e3;
 value = steering_loss(y, y_target) - tol;
 isterminal = 1;
 direction = 0;
