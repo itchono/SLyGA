@@ -71,7 +71,7 @@ end
 acceleration = propulsion_model(t, y, alpha, beta);
 
 % Dynamics
-yp = [gve_mee(t, y, acceleration); norm(acceleration)];
+yp = [gve_mee(y, acceleration); norm(acceleration)];
 yp(1) = yp(1) / 6378e3;
 
 end

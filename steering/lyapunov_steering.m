@@ -1,4 +1,4 @@
-function [alpha, beta] = lyapunov_steering(~, y, y_tgt)
+function [alpha, beta] = lyapunov_steering(~, y, y_tgt, weights)
 % LYAPUNOV_STEERING  Steering law for Lyapunov control
 %
 %   [alpha, beta] = lyapunov_steering(t, y, y_tgt)
@@ -10,6 +10,10 @@ function [alpha, beta] = lyapunov_steering(~, y, y_tgt)
 %
 % Outputs:
 %   [alpha, beta] = steering angles
+
+if nargin < 4
+    weights = ones(length(y), 1);
+end
 
 [p, f, g, h, k, L] = unpack_mee(y);
 p_hat = y_tgt(1);

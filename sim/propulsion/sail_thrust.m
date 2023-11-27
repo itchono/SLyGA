@@ -18,10 +18,7 @@ function acc_lvlh = sail_thrust(t, y, alpha, beta)
 
 r_spacecraft_i = mee2cartesian(p, f, g, h, k, L);
 
-% Sail/Sun parameters
-P = 9.12e-6; % N/m^2
-sigma = 0.01; % kg/m^2
-eta = 0.85;
+
 
 % Calculate Cone Angle/Occlusion
 sc_dir_lvlh = steering2lvlh(alpha, beta);
@@ -33,9 +30,9 @@ c_cone_ang = dot(sc_dir_i, sunlight_dir_i);
 illumination = ~in_eclipse(r_spacecraft_i, r_sun_i, 6378e3);
 
 % prefactor for sail thrust
-efficiency = 2 * P * eta / sigma * illumination;
+fac = thrust_magnitude * illumination;
 
 % Solar sail thrust equation
-acc_lvlh = efficiency .* sign(c_cone_ang) .* c_cone_ang.^2 .* sc_dir_lvlh;
+acc_lvlh = fac .* sign(c_cone_ang) .* c_cone_ang.^2 .* sc_dir_lvlh;
 
 end
