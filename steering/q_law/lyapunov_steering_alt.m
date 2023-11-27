@@ -1,4 +1,4 @@
-function [alpha, beta] = lyapunov_steering(~, y, y_tgt, weights)
+function [alpha, beta] = lyapunov_steering_alt(~, y, y_tgt, weights)
 % LYAPUNOV_STEERING  Steering law for Lyapunov control
 %
 %   [alpha, beta] = lyapunov_steering(t, y, y_tgt)
