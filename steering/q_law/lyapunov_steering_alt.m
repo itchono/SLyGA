@@ -12,7 +12,7 @@ function [alpha, beta] = lyapunov_steering(~, y, y_tgt, weights)
 %   [alpha, beta] = steering angles
 
 if nargin < 4
-    weights = ones(5, 1);
+    weights = [1; 1; 1; 1; 1];
 end
 
 % scalings
@@ -23,9 +23,9 @@ oe = y(1:5);
 oe_hat = y_tgt;
 
 % cross-terms in gamma
-gamma = 2 .* (oe - oe_hat) ./ d_oe_max .* weights .* S .* A(1:5, :);
+Gamma = weights .* S .* 2 .* (oe - oe_hat) ./ d_oe_max .* A(1:5, :);
 % Be careful on ordering; GVEs are in r,t,n, but D1, D2, D3 are in t,r,n
-D = sum(gamma, 1);
+D = sum(Gamma, 1);
 D1 = D(2);
 D2 = D(1);
 D3 = D(3);

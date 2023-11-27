@@ -27,18 +27,13 @@ function [y, t, dv] = run_mission(cfg)
 %
 
 % Set up termination conditions
-options = odeset(cfg.options, 'Events', @(t, y) mee_convergence(t, y, cfg.y_target, cfg.tol));
+options = odeset(cfg.options, 'Events', @(t, y) mee_convergence(t, y, cfg.y_target, cfg.tol, cfg.guidance_weights));
 
 % Scale initial conditions
 cfg.y0 = [cfg.y0(1) / 6378e3; cfg.y0(2:end)];
 
-ode = @(t, y) slyga_ode(t, y, cfg.y_target, cfg.propulsion_model, cfg.steering_law);
-if func2str(cfg.solver) == "ode5"
-    t = linspace(cfg.t_span(1), cfg.t_span(2), 1e4);
-    y_raw = cfg.solver(ode, t, [cfg.y0; 0]);
-else
-    [t, y_raw] = cfg.solver(ode, cfg.t_span, [cfg.y0; 0], options);
-end
+ode = @(t, y) slyga_ode(t, y, cfg.y_target, cfg.propulsion_model, cfg.steering_law, cfg.guidance_weights);
+[t, y_raw] = cfg.solver(ode, cfg.t_span, [cfg.y0; 0], options);
 
 % post-processing scaling
 y = y_raw(:, 1:6)';
@@ -47,7 +42,7 @@ dv = y_raw(:, 7);
 
 end
 
-function yp = slyga_ode(t, y, y_target, propulsion_model, steering_law)
+function yp = slyga_ode(t, y, y_target, propulsion_model, steering_law, weights)
 % SLYGA_ODE governinig ODE for SLyGA Simulations
 %   YP = SLYGA_ODE(T, Y, PROPULSION_MODEL, STEERING_LAW, Y_TARGET) returns
 %   the time derivative in modified equinoctial elements for the state
@@ -60,7 +55,7 @@ function yp = slyga_ode(t, y, y_target, propulsion_model, steering_law)
 y = [y(1) * 6378e3; y(2:end)];
 
 % GNC
-[alpha, beta] = steering_law(t, y, y_target);
+[alpha, beta] = steering_law(t, y, y_target, weights);
 
 % Adjust targeted steering angle if needed
 if func2str(propulsion_model) == "sail_thrust"
@@ -76,11 +71,11 @@ yp(1) = yp(1) / 6378e3;
 
 end
 
-function [value, isterminal, direction] = mee_convergence(~, y, y_target, tol)
+function [value, isterminal, direction] = mee_convergence(~, y, y_target, tol, weights)
 % Determines if the orbital parameters are within TOL L2 norm of the
 % target
 y(1) = y(1) * 6378e3;
-value = steering_loss(y, y_target) - tol;
+value = steering_loss(y, y_target, weights) - tol;
 isterminal = 1;
 direction = 0;
 end
