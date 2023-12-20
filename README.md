@@ -51,11 +51,8 @@ Displaying a summary of pre-mission and post-mission information
 This folder includes functions for converting between coordinate frames, computing orbital elements, and other miscellaneous functions.
 
 ## Usage
-### `scripts/demo_plotter.m`
-Orbit plotting demo
-
-### `scripts/demo_mission.m`
-Mission demo
+1. Run one of the mission cases inside `scripts`.
+2. Wait for the sim to finish. Then, run `postprocess` to show plots.
 
 ## Code Formatting
 Code is formatted using [MBeautifier](https://github.com/davidvarga/MBeautifier).

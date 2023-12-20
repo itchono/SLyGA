@@ -26,19 +26,27 @@ function [y, t, dv] = run_mission(cfg)
 %       - dv: delta-v expended (m/s)
 %
 
+%% Pre-Run
+fprintf(" ________  ___           ___    ___ ________  ________     \n|\\   ____\\|\\  \\         |\\  \\  /  /|\\   ____\\|\\   __  \\    \n\\ \\  \\___|\\ \\  \\        \\ \\  \\/  / | \\  \\___|\\ \\  \\|\\  \\   \n \\ \\_____  \\ \\  \\        \\ \\    / / \\ \\  \\  __\\ \\   __  \\  \n  \\|____|\\  \\ \\  \\____    \\/  /  /   \\ \\  \\|\\  \\ \\  \\ \\  \\ \n    ____\\_\\  \\ \\_______\\__/  / /      \\ \\_______\\ \\__\\ \\__\\\n   |\\_________\\|_______|\\___/ /        \\|_______|\\|__|\\|__|\n   \\|_________|        \\|___|/                             \nBEGIN RUN\n")
+print_cfg_summary(cfg) % print out mission info
+
 % Set up termination conditions
 options = odeset(cfg.options, 'Events', @(t, y) mee_convergence(t, y, cfg.y_target, cfg.tol, cfg.guidance_weights));
 
 % Scale initial conditions
 cfg.y0 = [cfg.y0(1) / 6378e3; cfg.y0(2:end)];
 
+%% Run
 ode = @(t, y) slyga_ode(t, y, cfg.y_target, cfg.propulsion_model, cfg.steering_law, cfg.guidance_weights);
 [t, y_raw] = cfg.solver(ode, cfg.t_span, [cfg.y0; 0], options);
 
-% post-processing scaling
+% post-processing scaling and reprocessing
 y = y_raw(:, 1:6)';
 y(1, :) = y(1, :) * 6378e3;
 dv = y_raw(:, 7);
+
+%% Post-run
+print_mission_summary(y, t, dv, cfg)
 
 end
 
@@ -51,7 +59,8 @@ function yp = slyga_ode(t, y, y_target, propulsion_model, steering_law, weights)
 %   a function handle to the function that computes the steering angle
 %   vector. YP is the time derivative of Y. Y_TARGET is the target state (shape [3, 1])
 
-% Scaling
+% Scaling, for error tolerance only (guidance law does scaling internally,
+% so we feed it in the unscaled values)
 y = [y(1) * 6378e3; y(2:end)];
 
 % GNC

@@ -1,4 +1,4 @@
-function plot_elements(y, t, y_target)
+function plot_elements_mee(y, t, y_target)
 [p, f, g, h, k, ~] = unpack_mee(y);
 
 % Plots orbital elements in stacked plots

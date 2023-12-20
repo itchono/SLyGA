@@ -21,19 +21,22 @@ S = [1./6378e3; 1; 1; 1; 1];
 d_oe_max = approxmaxroc(y);
 oe = y(1:5);
 oe_hat = y_tgt;
-d_oe = A(1:5, :);
 
+% Calculate penalty and "classic" components separately
 [P, dPdoe] = penalty(y, 1, 10000e3);
-Gamma_penalty = dPdoe .* ((oe - oe_hat) ./ d_oe_max).^2 .* d_oe;
-Gamma_classic = 2 .* (oe - oe_hat) ./ d_oe_max .* d_oe;
+Xi_penalty = dPdoe .* ((oe - oe_hat) ./ d_oe_max).^2;
+Xi_classic = 2 .* (oe - oe_hat) ./ d_oe_max;
 
-Gamma = weights .* S .* (Gamma_penalty + (1+P) .* Gamma_classic);
+% Bring together the components
+d_oe_d_F = A(1:5, :);
+Xi = weights .* S .* (Xi_penalty + (1+P) .* Xi_classic);
+
+d_Gamma_d_F = d_oe_d_F.' * Xi;
 
 % Be careful on ordering; GVEs are in r,t,n, but D1, D2, D3 are in t,r,n
-D = sum(Gamma, 1);
-D1 = D(2);
-D2 = D(1);
-D3 = D(3);
+D1 = d_Gamma_d_F(2);
+D2 = d_Gamma_d_F(1);
+D3 = d_Gamma_d_F(3);
 
 % Optimal steering angles)
 alpha = atan2(-D2, -D1);

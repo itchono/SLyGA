@@ -1,9 +1,11 @@
-function plot_everything(y, t, y_target)
-% Plots everything for a mission
+% Make sure everything is in workspace before this runs
+
+%% Processing
+y_target = mission_cfg.y_target;
 
 %% Figures
 hf1 = figure;
-plot_elements(y, t, y_target);
+plot_elements_mee(y, t, y_target);
 saveas(hf1, 'slyga_elements.pdf')
 
 hf2 = figure;
@@ -17,5 +19,3 @@ exportgraphics(hf3, 'slyga_orbit_plot.png', 'Resolution', 300)
 
 %% Video
 plot_osculating_mee(y);
-
-end
