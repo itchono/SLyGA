@@ -1,5 +1,5 @@
-function [alpha, beta] = lyapunov_steering(~, y, y_tgt, weights)
-% LYAPUNOV_STEERING  Steering law for Lyapunov control
+function [alpha, beta] = lyapunov_steering(~, y, cfg)
+% LYAPUNOV_STEERING  Steering law for Lyapunov control WITH PENALTY
 %
 %   [alpha, beta] = lyapunov_steering(t, y, y_tgt)
 %
@@ -11,28 +11,29 @@ function [alpha, beta] = lyapunov_steering(~, y, y_tgt, weights)
 % Outputs:
 %   [alpha, beta] = steering angles
 
-if nargin < 4
-    weights = ones(length(y), 1);
-end
+% scalings
+S = [1./6378e3; 1; 1; 1; 1];
+[A, ~, ~] = gve_coeffs(y);
+d_oe_max = approxmaxroc(y);
+oe = y(1:5);
+oe_hat = cfg.y_target;
 
-[p, f, g, h, k, L] = unpack_mee(y);
-p_hat = y_tgt(1);
-f_hat = y_tgt(2);
-g_hat = y_tgt(3);
-h_hat = y_tgt(4);
-k_hat = y_tgt(5);
+% Calculate penalty and "classic" components separately
+[P, dPdoe] = penalty(y, cfg.penalty_param, cfg.min_pe);
+Xi_penalty = dPdoe .* ((oe - oe_hat) ./ d_oe_max).^2;
+Xi_classic = 2 .* (oe - oe_hat) ./ d_oe_max;
+w_p = cfg.penalty_weight;
 
-q = 1 + f .* cos(L) + g .* sin(L);
+% Bring together the components
+d_oe_d_F = A(1:5, :);
+Xi = cfg.guidance_weights .* S .* (w_p * Xi_penalty + (1 + w_p * P) .* Xi_classic);
 
-% SCALING: p by earth radius
-D1 = 2 .* (p - p_hat) ./ 6378e3 ...
-    +(f - f_hat) .* ((q + 1) ./ q .* cos(L) + f ./ q) ...
-    +(g - g_hat) .* ((q + 1) ./ q .* sin(L) + g ./ q);
-D2 = (f - f_hat) .* sin(L) - (g - g_hat) .* cos(L);
-D3 = -g ./ q .* (f - f_hat) .* (h .* sin(L) - k .* cos(L)) ...
-    +f ./ q .* (g - g_hat) .* (h .* sin(L) - k .* cos(L)) ...
-    +2 .* (sqrt(1-g.^2) + f) ./ q .* cos(L) .* (h - h_hat) ...
-    +2 .* (sqrt(1-f.^2) + g) ./ q .* sin(L) .* (k - k_hat);
+d_Gamma_d_F = d_oe_d_F.' * Xi;
+
+% Be careful on ordering; GVEs are in r,t,n, but D1, D2, D3 are in t,r,n
+D1 = d_Gamma_d_F(2);
+D2 = d_Gamma_d_F(1);
+D3 = d_Gamma_d_F(3);
 
 % Optimal steering angles)
 alpha = atan2(-D2, -D1);

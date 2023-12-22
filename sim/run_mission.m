@@ -13,6 +13,7 @@ function [y, t, dv] = run_mission(cfg)
 %       - solver: ode solver (e.g. @ode45)
 %       - t_span: time span (s)
 %       - options: options for the ode solver
+%       (plus more weights for guidance law and tuning)
 %
 %   Outputs:
 %       - y: (6, N) array of
@@ -31,13 +32,13 @@ fprintf(" ________  ___           ___    ___ ________  ________     \n|\\   ____
 print_cfg_summary(cfg) % print out mission info
 
 % Set up termination conditions
-options = odeset(cfg.options, 'Events', @(t, y) mee_convergence(t, y, cfg.y_target, cfg.tol, cfg.guidance_weights));
+options = odeset(cfg.options, 'Events', @(t, y) mee_convergence(t, y, cfg));
 
 % Scale initial conditions
 cfg.y0 = [cfg.y0(1) / 6378e3; cfg.y0(2:end)];
 
 %% Run
-ode = @(t, y) slyga_ode(t, y, cfg.y_target, cfg.propulsion_model, cfg.steering_law, cfg.guidance_weights);
+ode = @(t, y) slyga_ode(t, y, cfg);
 [t, y_raw] = cfg.solver(ode, cfg.t_span, [cfg.y0; 0], options);
 
 % post-processing scaling and reprocessing
@@ -50,29 +51,28 @@ print_mission_summary(y, t, dv, cfg)
 
 end
 
-function yp = slyga_ode(t, y, y_target, propulsion_model, steering_law, weights)
+function yp = slyga_ode(t, y, cfg)
 % SLYGA_ODE governinig ODE for SLyGA Simulations
-%   YP = SLYGA_ODE(T, Y, PROPULSION_MODEL, STEERING_LAW, Y_TARGET) returns
+%   YP = SLYGA_ODE(T, Y, CFG) returns
 %   the time derivative in modified equinoctial elements for the state
-%   vector Y at time T. PROPULSION_MODEL is a function handle to the
-%   function that computes the thrust acceleration vector. STEERING_LAW is
-%   a function handle to the function that computes the steering angle
-%   vector. YP is the time derivative of Y. Y_TARGET is the target state (shape [3, 1])
+%   vector Y at time T.
+
+%   State is 7x1, 6 for orbital elements and 1 for dv
 
 % Scaling, for error tolerance only (guidance law does scaling internally,
 % so we feed it in the unscaled values)
 y = [y(1) * 6378e3; y(2:end)];
 
 % GNC
-[alpha, beta] = steering_law(t, y, y_target, weights);
+[alpha, beta] = cfg.steering_law(t, y, cfg);
 
 % Adjust targeted steering angle if needed
-if func2str(propulsion_model) == "sail_thrust"
+if func2str(cfg.propulsion_model) == "sail_thrust"
     [alpha, beta] = ndf_heuristic(t, y, alpha, beta);
 end
 
 % Propulsion
-acceleration = propulsion_model(t, y, alpha, beta);
+acceleration = cfg.propulsion_model(t, y, alpha, beta);
 
 % Dynamics
 yp = [gve_mee(y, acceleration); norm(acceleration)];
@@ -80,11 +80,11 @@ yp(1) = yp(1) / 6378e3;
 
 end
 
-function [value, isterminal, direction] = mee_convergence(~, y, y_target, tol, weights)
+function [value, isterminal, direction] = mee_convergence(~, y, cfg)
 % Determines if the orbital parameters are within TOL L2 norm of the
 % target
 y(1) = y(1) * 6378e3;
-value = steering_loss(y, y_target, weights) - tol;
+value = steering_loss(y, cfg.y_target, cfg.guidance_weights) - cfg.tol;
 isterminal = 1;
 direction = 0;
 end

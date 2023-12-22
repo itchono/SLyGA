@@ -1,5 +1,6 @@
 function n = coverstone_maximization(u_i, b_i, n_star_i)
 % from coverstone and prussing paper; figure out what to do with this!
+% check out Oguri paper and compare how they implemented it
 
 v_alpha = dot(n_star_i, u_i);
 v_beta = dot(n_star_i, b_i);
