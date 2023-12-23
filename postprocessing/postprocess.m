@@ -9,7 +9,7 @@ plot_elements_mee(y, t, y_target);
 saveas(hf1, 'slyga_elements.pdf')
 
 hf2 = figure;
-plot_steering_history(y, t, y_target);
+plot_steering_history(y, t, mission_cfg);
 saveas(hf2, 'slyga_steering.pdf')
 
 hf3 = figure;

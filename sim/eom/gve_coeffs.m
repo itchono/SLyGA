@@ -16,7 +16,7 @@ q = 1 + f .* cos(L) + g .* sin(L);
 mu = 3.986e14;
 
 % Implement differential equation
-leading_coeff = 1 ./ q * sqrt(p./mu);
+leading_coeff = 1 ./ q .* sqrt(p./mu);
 dp = [0, 2 .* p, 0];
 df = [q .* sin(L), (q + 1) .* cos(L) + f, -g .* (h .* sin(L) - k .* cos(L))];
 dg = [-q .* cos(L), (q + 1) .* sin(L) + g, f .* (h .* sin(L) - k .* cos(L))];

@@ -1,12 +1,17 @@
-function plot_steering_history(y, t, y_target)
+function plot_steering_history(y, t, cfg)
 %% Preprocessing
-err = steering_loss(y, y_target);
-[alpha, beta] = lyapunov_steering(t, y, y_target);
+err = steering_loss(y, cfg.y_target, cfg.guidance_weights);
 
-alpha_f = zeros(size(alpha));
-beta_f = zeros(size(beta));
+alpha = zeros(length(t), 1);
+beta = zeros(length(t), 1);
+
+alpha_f = zeros(length(t), 1);
+beta_f = zeros(length(t), 1);
 
 for j = 1:length(t)
+    % yup this is slow, but that's the price to pay for getting rid of
+    % explicit-ness in lyapunov steering
+    [alpha(j), beta(j)] = lyapunov_steering(t(j), y(:, j), cfg);
     [alpha_f(j), beta_f(j)] = ndf_heuristic(t(j), y(:, j), alpha(j), beta(j));
 end
 

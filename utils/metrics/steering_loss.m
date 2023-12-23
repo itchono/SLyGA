@@ -10,11 +10,6 @@ function err = steering_loss(y, y_target, weights)
 %  Outputs:
 %    err = steering loss to target element set
 
-if nargin < 3
-    weights = [1; 1; 1; 1; 1];
-end
-
-
 [p, f, g, h, k, ~] = unpack_mee(y);
 
 p_diff_norm = (p - y_target(1)) / 6378e3;
