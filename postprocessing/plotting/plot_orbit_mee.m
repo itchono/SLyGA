@@ -16,7 +16,7 @@ orbit_number = floor(L/(2 * pi));
 pos = mee2cartesian(p, f, g, h, k, L);
 
 % plot the "earth" and the orbit
-plot_circle(0, 0, 6378e3, [0.3010, 0.7450, 0.9330]);
+plot_sphere(0, 0, 0, 6378e3, [0.3010, 0.7450, 0.9330]);
 hold on
 
 x = pos(1, :);
@@ -28,7 +28,6 @@ z = pos(3, :);
 patch([x, nan], [y, nan], [z, nan], [orbit_number, nan], ...
     'facecol', 'none', ...
     'edgecol', 'interp');
-axis equal;
 title("Earth Inertial Coordinates");
 xlabel("x (m)")
 ylabel("y (m)")
@@ -40,6 +39,7 @@ try
 end
 
 ylabel(cbar, "Orbit Number")
+axis equal;
 
 view(3)
 end

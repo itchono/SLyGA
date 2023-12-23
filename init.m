@@ -5,7 +5,7 @@ fprintf(" ________  ___           ___    ___ ________  ________     \n|\\   ____
 
 % 1) Add all subfolders to path
 base_path = fileparts(which(mfilename));
-subdir_names = ["plotting", "printing", "scripts", "sim", "steering", "utils"];
+subdir_names = ["postprocessing", "scripts", "sim", "steering", "utils"];
 for subdir = subdir_names
     path_to_add = genpath(fullfile(base_path, subdir));
     fprintf("Adding path: %s\n", path_to_add);

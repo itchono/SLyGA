@@ -16,14 +16,7 @@ function acc_lvlh = constant_thrust(~, ~, alpha, beta)
 %       acc_lvlh    Thrust acceleration in the LVLH frame (m/s^2)
 %
 
-% parameters
-P = 9.12e-6; % N/m^2
-sigma = 0.01; % kg/m^2
-eta = 0.85;
-
-% thrust
-efficiency = 2 * P * eta / sigma;
 sc_dir_lvlh = steering2lvlh(alpha, beta);
-acc_lvlh = efficiency .* sc_dir_lvlh;
+acc_lvlh = thrust_magnitude .* sc_dir_lvlh;
 
 end
