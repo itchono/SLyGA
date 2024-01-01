@@ -12,6 +12,7 @@ num_orbits = length(ind_orbits);
 
 %% Initial plot stuff
 fh = figure;
+plot_orbit_mee(y)
 
 L_sample = linspace(0, 2*pi, 200);
 plot_sphere(0, 0, 0, 6378e3, [0.3010, 0.7450, 0.9330]);
@@ -22,7 +23,7 @@ th = title(sprintf("Orbit 1 of %d", num_orbits));
 cart_sample = mee2cartesian(p(1), f(1), g(1), h(1), k(1), L_sample);
 plot3(cart_sample(1, :), cart_sample(2, :), cart_sample(3, :), "Color", "#EFA42C", "DisplayName", "Initial Orbit", "LineWidth", 2, "LineStyle", ":");
 
-main_orbit = plot3(cart_sample(1, :), cart_sample(2, :), cart_sample(3, :), "Color", "black", "DisplayName", "Current Orbit", "LineWidth", 2);
+main_orbit = plot3(cart_sample(1, :), cart_sample(2, :), cart_sample(3, :), "Color", "black", "DisplayName", "Current Orbit", "LineWidth", 5);
 
 cart_sample = mee2cartesian(p(end), f(end), g(end), h(end), k(end), L_sample);
 plot3(cart_sample(1, :), cart_sample(2, :), cart_sample(3, :), "Color", "#27CC53", "DisplayName", "Final Orbit", "LineWidth", 2, "LineStyle", ":");
