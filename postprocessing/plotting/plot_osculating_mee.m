@@ -1,4 +1,4 @@
-function plot_osculating_mee(y)
+function plot_osculating_mee(y, save_path)
 % Expect y to be (6, N)
 % no need to interpolate vectors unless you have VERY big skips in L
 % Reference: https://www.mathworks.com/help/matlab/ref/getframe.html
@@ -31,7 +31,7 @@ axis equal
 view(3)
 
 %% Initialize video
-myVideo = VideoWriter('slyga_video', 'MPEG-4'); %open video file
+myVideo = VideoWriter(save_path, 'MPEG-4'); %open video file
 myVideo.FrameRate = 30;
 open(myVideo)
 
