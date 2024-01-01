@@ -68,7 +68,7 @@ y = [y(1) * 6378e3; y(2:end)];
 
 % Adjust targeted steering angle if needed
 if func2str(cfg.propulsion_model) == "sail_thrust"
-    [alpha, beta] = ndf_heuristic(t, y, alpha, beta);
+    [alpha, beta] = ndf_heuristic(t, y, alpha, beta, cfg);
 end
 
 % Propulsion

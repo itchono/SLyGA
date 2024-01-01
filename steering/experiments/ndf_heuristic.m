@@ -1,4 +1,4 @@
-function [alpha, beta] = ndf_heuristic(t, y, alpha_star, beta_star)
+function [alpha, beta] = ndf_heuristic(t, y, alpha_star, beta_star, cfg)
 % NDF_HEURISTIC  generate new steering angles if the original target
 % angles are not possible with a solar sail
 %  [alpha, beta] = ndf_heuristic(t, y, alpha_star, beta_star)
@@ -7,13 +7,14 @@ function [alpha, beta] = ndf_heuristic(t, y, alpha_star, beta_star)
 %  t - current time
 %  y - state at current time
 %  alpha_star, beta_star - original steering angles
+%  cfg - configuration which included feathering and degradation angles
 %
 % Outputs:
 %  alpha, beta - new steering angles
 
 % Threshold angle
-kappa_d = deg2rad(70);  % degraded guidance threshold
-kappa_f = deg2rad(91);  % feathering threshold
+kappa_d = cfg.kappa_d;  % degraded guidance threshold
+kappa_f = cfg.kappa_f;  % feathering threshold
 
 [p, f, g, h, k, L] = unpack_mee(y);
 
