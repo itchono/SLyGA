@@ -6,6 +6,11 @@ y_target = mission_cfg.y_target;
 mkdir(fullfile("outputs", casename));
 
 %% Write config
+exportable_cfg = mission_cfg;
+exportable_cfg.propulsion_model = func2str(exportable_cfg.propulsion_model);
+exportable_cfg.steering_law = func2str(exportable_cfg.steering_law);
+exportable_cfg.solver = func2str(exportable_cfg.solver);
+writestruct(exportable_cfg, fullfile("outputs", casename, 'mission_config.xml'))
 
 %% Figures
 hf1 = figure;

@@ -26,7 +26,7 @@ mission_cfg.tol = 5e-3;
 mission_cfg.guidance_weights = [1; 1; 1; 1; 1];
 mission_cfg.penalty_param = 1;  % kicking this too high causes big issues
 mission_cfg.min_pe = 6878e3;
-mission_cfg.penalty_weight = 5;
+mission_cfg.penalty_weight = 0;
 mission_cfg.kappa_d = deg2rad(64);
 mission_cfg.kappa_f = deg2rad(91);
 % Set a "MaxStep" of about 1e4 in odeset if you're using ode89 or ode78
