@@ -12,6 +12,6 @@ dPdf = (f.*pen_param.*p.*exp(-pen_param.*(p./(rpmin.*(sqrt(f.^2+g.^2)+1.0))-1.0)
 dPdg = (g.*pen_param.*p.*exp(-pen_param.*(p./(rpmin.*(sqrt(f.^2+g.^2)+1.0))-1.0)).*1.0./(sqrt(f.^2+g.^2)+1.0).^2.*1.0./sqrt(f.^2+g.^2))./rpmin;
 dPdp = -(pen_param.*exp(-pen_param.*(p./(rpmin.*(sqrt(f.^2+g.^2)+1.0))-1.0)))./(rpmin.*(sqrt(f.^2+g.^2)+1.0));
 
-dPdy = [dPdf; dPdg; dPdp; 0; 0];
+dPdy = [dPdp; dPdf; dPdg; 0; 0];
 
 end
