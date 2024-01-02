@@ -1,4 +1,5 @@
 function plot_steering_history(y, t, cfg)
+
 %% Preprocessing
 err = steering_loss(y, cfg.y_target, cfg.guidance_weights);
 
@@ -42,4 +43,3 @@ ylabel("Guidance Error")
 xlabel("Time since vernal equinox (d)")
 grid
 end
-

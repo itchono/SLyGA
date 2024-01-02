@@ -50,7 +50,7 @@ for j = 1:3:num_orbits
     main_orbit.ZData = cart_sample(3, :);
 
     % Add shadow of previous orbits
-    colour_idx = ceil(j/num_orbits * length(cm));
+    colour_idx = ceil(j/num_orbits*length(cm));
     plot3(cart_sample(1, :), cart_sample(2, :), cart_sample(3, :), "Color", cm(colour_idx, :), "DisplayName", "Current Orbit", "LineWidth", 0.5);
 
     th.String = sprintf("Orbit %d of %d", j, num_orbits);

@@ -12,7 +12,7 @@ function [alpha, beta] = lyapunov_steering(t, y, cfg)
 %   [alpha, beta] = steering angles
 
 % scalings
-S = [1./6378e3; 1; 1; 1; 1];
+S = [1 ./ 6378e3; 1; 1; 1; 1];
 [A, ~, ~] = gve_coeffs(y);
 d_oe_max = approxmaxroc(y);
 oe = y(1:5);
@@ -37,6 +37,6 @@ D3 = d_Gamma_d_F(3);
 
 % Optimal steering angles)
 alpha = atan2(-D2, -D1);
-beta = atan2(-D3, sqrt(D1.^2+D2.^2));  % atan2 for stability (0/0 case)
+beta = atan2(-D3, sqrt(D1.^2+D2.^2)); % atan2 for stability (0/0 case)
 
 end

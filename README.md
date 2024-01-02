@@ -41,11 +41,8 @@ Currently, there are two propulsion models implemented:
 
 `run_mission.m` connects all of the low-level ODEs and guidance stack together.
 
-### `plotting` - Plotting Functions
-Plotting from Modified Equinoctial Elements (MEEs).
-
-### `printing` - Printing Functions
-Displaying a summary of pre-mission and post-mission information
+### `postprocess` - Postprocessing Functions
+Used to interpolate, plot, and summarize the results of the simulations.
 
 ### `utils` - Utility Functions
 This folder includes functions for converting between coordinate frames, computing orbital elements, and other miscellaneous functions.
