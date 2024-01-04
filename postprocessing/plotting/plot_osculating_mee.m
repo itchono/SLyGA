@@ -41,7 +41,7 @@ open(myVideo)
 
 %% Animation
 F(num_orbits) = struct('cdata', [], 'colormap', []);
-for j = 1:3:num_orbits
+for j = [1:3:num_orbits, num_orbits]
     % Update plots
     idx = ind_orbits(j);
     cart_sample = mee2cartesian(p(idx), f(idx), g(idx), h(idx), k(idx), L_sample);
