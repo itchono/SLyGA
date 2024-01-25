@@ -20,23 +20,16 @@ oe_hat = cfg.y_target;
 
 % Calculate penalty and "classic" components separately
 [P, dPdoe] = penalty(y, cfg.penalty_param, cfg.min_pe);
-Xi_penalty = dPdoe .* ((oe - oe_hat) ./ d_oe_max).^2;
-Xi_classic = 2 .* (oe - oe_hat) ./ d_oe_max;
+Xi_P = dPdoe .* ((oe - oe_hat) ./ d_oe_max).^2;
+Xi_E = 2 .* (oe - oe_hat) ./ d_oe_max;
 w_p = cfg.penalty_weight;
 
 % Bring together the components
-d_oe_d_F = A(1:5, :);
-Xi = cfg.guidance_weights .* S .* (w_p * Xi_penalty + (1 + w_p * P) .* Xi_classic);
-
-d_Gamma_d_F = d_oe_d_F.' * Xi;
-
-% Be careful on ordering; GVEs are in r,t,n, but D1, D2, D3 are in t,r,n
-D1 = d_Gamma_d_F(2);
-D2 = d_Gamma_d_F(1);
-D3 = d_Gamma_d_F(3);
+A = A(1:5, :);
+D = A.' * (cfg.guidance_weights .* S .* (w_p * Xi_P + (1 + w_p * P) .* Xi_E));
 
 % Optimal steering angles)
-alpha = atan2(-D2, -D1);
-beta = atan2(-D3, sqrt(D1.^2+D2.^2)); % atan2 for stability (0/0 case)
+alpha = atan2(-D(1), -D(2));
+beta = atan2(-D(3), norm(D(1:2))); % atan2 for stability (0/0 case)
 
 end
