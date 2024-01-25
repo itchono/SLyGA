@@ -3,10 +3,10 @@ function [alpha, beta] = linear_steering(~, y, y_tgt)
 
 [p, f, g, h, k, L] = unpack_mee(y);
 
-scaling_mat = diag([1/6378e3; 1; 1; 1; 1]);
+scaling_mat = diag([1 / 6378e3; 1; 1; 1; 1]);
 
 % Required diretion to go in
-b = -scaling_mat * (y(1:5)-y_tgt);
+b = -scaling_mat * (y(1:5) - y_tgt);
 
 % Shorthands
 q = 1 + f * cos(L) + g * sin(L);
@@ -25,6 +25,6 @@ A = scaling_mat * leading_coeff * [dp; df; dg; dh; dk];
 % Solve for which way force needs to point
 n = A \ b;
 
-[alpha, beta] = lvlh2steering(n / norm(n));
+[alpha, beta] = lvlh2steering(n/norm(n));
 
 end

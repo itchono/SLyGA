@@ -28,6 +28,19 @@ function [y, t, dv] = run_mission(cfg)
 %
 
 %% Pre-Run
+
+% filesystem
+[~, ~, ~] = mkdir("outputs");
+mkdir(fullfile("outputs", cfg.casename));
+
+% Write config
+exportable_cfg = cfg;
+exportable_cfg.propulsion_model = func2str(exportable_cfg.propulsion_model);
+exportable_cfg.steering_law = func2str(exportable_cfg.steering_law);
+exportable_cfg.solver = func2str(exportable_cfg.solver);
+writestruct(exportable_cfg, fullfile("outputs", cfg.casename, 'mission_config.xml'))
+
+% printout
 fprintf(" ________  ___           ___    ___ ________  ________     \n|\\   ____\\|\\  \\         |\\  \\  /  /|\\   ____\\|\\   __  \\    \n\\ \\  \\___|\\ \\  \\        \\ \\  \\/  / | \\  \\___|\\ \\  \\|\\  \\   \n \\ \\_____  \\ \\  \\        \\ \\    / / \\ \\  \\  __\\ \\   __  \\  \n  \\|____|\\  \\ \\  \\____    \\/  /  /   \\ \\  \\|\\  \\ \\  \\ \\  \\ \n    ____\\_\\  \\ \\_______\\__/  / /      \\ \\_______\\ \\__\\ \\__\\\n   |\\_________\\|_______|\\___/ /        \\|_______|\\|__|\\|__|\n   \\|_________|        \\|___|/                             \nBEGIN RUN\n")
 print_cfg_summary(cfg) % print out mission info
 
@@ -38,6 +51,7 @@ options = odeset(cfg.options, 'Events', @(t, y) mee_convergence(t, y, cfg));
 cfg.y0 = [cfg.y0(1) / 6378e3; cfg.y0(2:end)];
 
 %% Run
+tic;
 ode = @(t, y) slyga_ode(t, y, cfg);
 [t, y_raw] = cfg.solver(ode, cfg.t_span, [cfg.y0; 0], options);
 
@@ -47,6 +61,8 @@ y(1, :) = y(1, :) * 6378e3;
 dv = y_raw(:, 7);
 
 %% Post-run
+time_elapsed = toc;
+fprintf("FINISHED in %.2f seconds (compute)\n", time_elapsed);
 print_mission_summary(y, t, dv, cfg)
 
 end
@@ -68,7 +84,7 @@ y = [y(1) * 6378e3; y(2:end)];
 
 % Adjust targeted steering angle if needed
 if func2str(cfg.propulsion_model) == "sail_thrust"
-    [alpha, beta] = ndf_heuristic(t, y, alpha, beta);
+    [alpha, beta] = ndf_heuristic(t, y, alpha, beta, cfg);
 end
 
 % Propulsion

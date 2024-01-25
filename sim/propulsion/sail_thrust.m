@@ -19,7 +19,6 @@ function acc_lvlh = sail_thrust(t, y, alpha, beta)
 r_spacecraft_i = mee2cartesian(p, f, g, h, k, L);
 
 
-
 % Calculate Cone Angle/Occlusion
 sc_dir_lvlh = steering2lvlh(alpha, beta);
 sc_dir_i = rot_inertial_LVLH(p, f, g, h, k, L) * sc_dir_lvlh;

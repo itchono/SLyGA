@@ -9,3 +9,5 @@ resources/**
 *.png
 *.pdf
 *.mp4
+*.xml
+*.txt

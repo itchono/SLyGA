@@ -8,12 +8,12 @@ My thesis is about trajectory guidance for solar sail spacecraft in orbits aroun
 
 * [See my one-pager description of the academic significance](https://github.com/itchono/SLyGA/files/12779364/Thesis_Proposal.pdf)
 
-* [See my WIP notes for thesis here (late September 2023)](https://github.com/itchono/SLyGA/files/12779359/thesis_notes_sep_2023.pdf)
+* [See my interim writeup (late January 2024)](https://github.com/itchono/SLyGA/files/14046375/Thesis_Interim_Report_Shareable.pdf)
 
 Below is an example of a trajectory I propagated which performs a three-dimensional orbital transfer using a Lyapunov steering law developed by me.
 
-![trajectory plot](https://github.com/itchono/SLyGA/assets/54449457/661a9786-f4a2-41a4-b6e9-d3d812143e94)
-![trajectory_animation](https://github.com/itchono/SLyGA/assets/54449457/103718fc-53da-43e3-b131-8695ff5a3cca)
+![trajectory plot](https://github.com/itchono/SLyGA/assets/54449457/9bc673e4-95c4-481e-a812-39a11eaad1b4)
+![trajectory_animation](https://github.com/itchono/SLyGA/assets/54449457/ccc4bfdc-72cc-4612-a566-3d8ceb14f91c)
 
 
 
@@ -29,30 +29,25 @@ Below is an example of a trajectory I propagated which performs a three-dimensio
 ## Code Structure
 ### `steering` - Steering Algorithms
 This code computes the LVLH steering angle in which to point the sail. There are currently two components to the steering algorithm:
-1. Lyapunov steering law - computes an optimal steering angle which decreases the control-Lyapunov potential function as quickly as possible
-2. NDF Heuristic - accounts for the position of the Sun, and adapts the steering angle proposed by the Lyapunov steering law to something a solar sail can achieve. e.g. Feathering the sail if the desired pointing direction is directly toward the Sun.
+1. Modified Q Law - computes an optimal steering angle which decreases the control-Lyapunov potential function as quickly as possible
+2. Steering Angle Regularization - accounts for the position of the Sun, and adapts the steering angle proposed by the Lyapunov steering law to something a solar sail can achieve. e.g. Feathering the sail if the desired pointing direction is directly toward the Sun.
 
 ### `sim` - Simulator
-This folder includes equations of motion, ephemerides, and propulsion models.
+This folder includes equations of motion, ephemerides, and propulsion models used to "operate" the guidance law.
 
-Currently, there are two propulsion models implemented:
-1. Constant thrust - thrusts in the direction of the sail normal vector with a constant magnitude
-2. Solar sail - thrusts in the direction of the sail normal vector with a magnitude dependent on cone angle
-
-`run_mission.m` connects all of the low-level ODEs and guidance stack together.
-
-### `plotting` - Plotting Functions
-Plotting from Modified Equinoctial Elements (MEEs).
-
-### `printing` - Printing Functions
-Displaying a summary of pre-mission and post-mission information
+### `postprocess` - Postprocessing Functions
+Used to interpolate, plot, and summarize the results of the simulations.
 
 ### `utils` - Utility Functions
 This folder includes functions for converting between coordinate frames, computing orbital elements, and other miscellaneous functions.
 
+### `scripts` - Case Files
+Various simulation cases to run.
+
 ## Usage
 1. Run one of the mission cases inside `scripts`.
 2. Wait for the sim to finish. Then, run `postprocess` to show plots.
+3. Data will be saved to the `outputs` folder.
 
 ## Code Formatting
 Code is formatted using [MBeautifier](https://github.com/davidvarga/MBeautifier).

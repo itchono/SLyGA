@@ -11,7 +11,7 @@ if nargin < 6
 end
 L_step = 2 * pi / points_per_orbit;
 
-L_interp = y(end, 1) : L_step : y(end, end);
+L_interp = y(end, 1):L_step:y(end, end);
 y_interp = interp1(y(end, :), y', L_interp)';
 t_interp = interp1(y(end, :), t, L_interp);
 

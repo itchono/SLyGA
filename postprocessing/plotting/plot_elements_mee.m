@@ -30,4 +30,6 @@ legend("h", "k", "Location", "best");
 ylabel("Nodal Position")
 grid
 
+xlabel("Elapsed Time (Days)")
+
 end

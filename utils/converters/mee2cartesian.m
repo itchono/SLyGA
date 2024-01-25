@@ -21,8 +21,8 @@ function [pos, vel] = mee2cartesian(p, f, g, h, k, L)
 % Work with alpha and s squared instead of alpha and s (sqrt'ed), because
 % sometimes these values can be less than zero, causing issues (we want to
 % keep things strictly real)
-alpha_sq = h.^2-k.^2;
-s_sq = 1+h.^2+k.^2;
+alpha_sq = h.^2 - k.^2;
+s_sq = 1 + h.^2 + k.^2;
 q = 1 + f .* cos(L) + g .* sin(L);
 r = p ./ q;
 

@@ -1,4 +1,5 @@
 function plot_steering_history(y, t, cfg)
+
 %% Preprocessing
 err = steering_loss(y, cfg.y_target, cfg.guidance_weights);
 
@@ -12,7 +13,7 @@ for j = 1:length(t)
     % yup this is slow, but that's the price to pay for getting rid of
     % explicit-ness in lyapunov steering
     [alpha(j), beta(j)] = lyapunov_steering(t(j), y(:, j), cfg);
-    [alpha_f(j), beta_f(j)] = ndf_heuristic(t(j), y(:, j), alpha(j), beta(j));
+    [alpha_f(j), beta_f(j)] = ndf_heuristic(t(j), y(:, j), alpha(j), beta(j), cfg);
 end
 
 %% Plot
@@ -42,4 +43,3 @@ ylabel("Guidance Error")
 xlabel("Time since vernal equinox (d)")
 grid
 end
-

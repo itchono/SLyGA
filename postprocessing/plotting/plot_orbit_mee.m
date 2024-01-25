@@ -40,6 +40,6 @@ end
 
 ylabel(cbar, "Orbit Number")
 axis equal;
-
+colormap turbo
 view(3)
 end
