@@ -29,6 +29,8 @@ function [y, t, dv] = run_mission(cfg)
 
 %% Pre-Run
 
+CART = true;
+
 % filesystem
 [~, ~, ~] = mkdir("outputs");
 mkdir(fullfile("outputs", cfg.casename));
@@ -45,20 +47,34 @@ fprintf(" ________  ___           ___    ___ ________  ________     \n|\\   ____
 print_cfg_summary(cfg) % print out mission info
 
 % Set up termination conditions
-options = odeset(cfg.options, 'Events', @(t, y) mee_convergence(t, y, cfg));
-
-% Scale initial conditions
-cfg.y0 = [cfg.y0(1) / 6378e3; cfg.y0(2:end)];
+if CART
+    options = odeset(cfg.options, 'Events', @(t, y) cartesian_convergence(t, y, cfg));
+    % No scaling for Cartesian
+    ode = @(t, y) dyn_cartesian(t, y, cfg);
+    % Convert to Cartesian
+    cfg.y0 = mee2cartesian(cfg.y0);
+else
+    options = odeset(cfg.options, 'Events', @(t, y) mee_convergence(t, y, cfg));
+    cfg.y0 = [cfg.y0(1) / 6378e3; cfg.y0(2:end)];
+    % Scale initial conditions for MEE
+    ode = @(t, y) dyn_mee(t, y, cfg);
+end
 
 %% Run
 tic;
-ode = @(t, y) dyn_mee(t, y, cfg);
 [t, y_raw] = cfg.solver(ode, cfg.t_span, [cfg.y0; 0], options);
 
 % post-processing scaling and reprocessing
 y = y_raw(:, 1:6)';
-y(1, :) = y(1, :) * 6378e3;
+if CART
+    % convert to MEE
+    y(1:6, :) = cartesian2mee(y(1:6, :));
+else
+    % rescale MEE
+    y(1, :) = y(1, :) * 6378e3;
+end
 dv = y_raw(:, 7);
+
 
 %% Post-run
 time_elapsed = toc;
@@ -72,6 +88,14 @@ function [value, isterminal, direction] = mee_convergence(~, y, cfg)
 % target
 y(1) = y(1) * 6378e3;
 value = steering_loss(y, cfg.y_target, cfg.guidance_weights) - cfg.tol;
+isterminal = 1;
+direction = 0;
+end
+
+function [value, isterminal, direction] = cartesian_convergence(~, y, cfg)
+y_mee = cartesian2mee(y);
+
+value = steering_loss(y_mee, cfg.y_target, cfg.guidance_weights) - cfg.tol;
 isterminal = 1;
 direction = 0;
 end

@@ -3,7 +3,7 @@
 
 %% Problem Definition
 % Create a struct for neatness
-mission_cfg.y0 = [6878e3; 0.1; -0.1; 0.5; 0; 0];
+mission_cfg.y0 = [6878e3; 0.01; -0.01; 0.5; 0; 0];
 mission_cfg.y_target = [7500e3; 0; 0; 0; 0.2];
 mission_cfg.propulsion_model = @sail_thrust;
 mission_cfg.steering_law = @lyapunov_steering;

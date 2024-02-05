@@ -8,12 +8,13 @@ function plot_orbit_mee(y)
 % Colours based on orbit number
 
 %% Data processing
-[p, f, g, h, k, L] = unpack_mee(y);
+[~, ~ , ~, ~ , ~, L] = unpack_mee(y);
 
 orbit_number = floor(L/(2 * pi));
 
 % convert position to Cartesian
-pos = mee2cartesian(p, f, g, h, k, L);
+pos = mee2cartesian(y);
+pos = pos(1:3, :);
 
 % plot the "earth" and the orbit
 plot_sphere(0, 0, 0, 6378e3, [0.3010, 0.7450, 0.9330]);

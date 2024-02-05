@@ -5,7 +5,7 @@ function [p, f, g, h, k, L] = unpack_mee(m)
 %   individual elements p, f, g, h, k, L
 %
 % Inputs:
-%   m - MEE vector
+%   m - MEE vector (Single column or h-stack of column vectors)
 %
 % Outputs:
 %   p, f, g, h, k, L - individual elements of MEE vector

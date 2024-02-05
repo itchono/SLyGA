@@ -16,10 +16,8 @@ function [alpha, beta] = ndf_heuristic(t, y, alpha_star, beta_star, cfg)
 kappa_d = cfg.kappa_d; % degraded guidance threshold
 kappa_f = cfg.kappa_f; % feathering threshold
 
-[p, f, g, h, k, L] = unpack_mee(y);
-
 % Calculate resultant cone angle from attitude
-CIO = rot_inertial_LVLH(p, f, g, h, k, L);
+CIO = rot_inertial_LVLH(y);
 COI = CIO';
 n_star_i = CIO * steering2lvlh(alpha_star, beta_star);
 [~, u_sun] = sun_position(t);
