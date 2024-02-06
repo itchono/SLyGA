@@ -28,9 +28,6 @@ function [y, t, dv] = run_mission(cfg)
 %
 
 %% Pre-Run
-
-CART = true;
-
 % filesystem
 [~, ~, ~] = mkdir("outputs");
 mkdir(fullfile("outputs", cfg.casename));
@@ -47,7 +44,7 @@ fprintf(" ________  ___           ___    ___ ________  ________     \n|\\   ____
 print_cfg_summary(cfg) % print out mission info
 
 % Set up termination conditions
-if CART
+if cfg.dynamics == "cartesian"
     options = odeset(cfg.options, 'Events', @(t, y) cartesian_convergence(t, y, cfg));
     % No scaling for Cartesian
     ode = @(t, y) dyn_cartesian(t, y, cfg);
@@ -66,7 +63,7 @@ tic;
 
 % post-processing scaling and reprocessing
 y = y_raw(:, 1:6)';
-if CART
+if cfg.dynamics == "cartesian"
     % convert to MEE
     y(1:6, :) = cartesian2mee(y(1:6, :));
 else
@@ -78,8 +75,7 @@ dv = y_raw(:, 7);
 
 %% Post-run
 time_elapsed = toc;
-fprintf("FINISHED in %.2f seconds (compute)\n", time_elapsed);
-print_mission_summary(y, t, dv, cfg)
+print_mission_summary(y, t, dv, cfg, time_elapsed)
 
 end
 

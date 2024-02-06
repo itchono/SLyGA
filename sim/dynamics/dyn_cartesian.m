@@ -19,7 +19,10 @@ if func2str(cfg.propulsion_model) == "sail_thrust"
 end
 
 % Propulsion
-acceleration = cfg.propulsion_model(t, y_mee, alpha, beta);
+acceleration = cfg.propulsion_model(t, y, alpha, beta);
+if cfg.j2
+    acceleration = acceleration + J2_perturbation(y);
+end
 
 % Dynamics
 yp = [n2_cartesian(y, acceleration); norm(acceleration)];

@@ -17,7 +17,8 @@ cfg.min_pe = 10000e3;
 cfg.penalty_weight = 0;
 cfg.kappa_d = deg2rad(64);
 cfg.kappa_f = deg2rad(91);
-% Set a "MaxStep" of about 1e4 in odeset if you're using ode89 or ode78
+cfg.dynamics = "mee";
+cfg.j2 = false;
 
 %% Run
 [~, cfg.casename, ~] = fileparts(mfilename);
