@@ -32,5 +32,8 @@ f = dot(ecc, fhat, 1);
 g = dot(ecc, ghat, 1);
 L = atan2(rhat(2, :) - vhat(1, :), rhat(1, :) + vhat(2, :));
 
+% make L monotonically increasing if it's a vector
+L = make_monotonically_increasing(L);
+
 m = [p; f; g; h; k; L];
 end

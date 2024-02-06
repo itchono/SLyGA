@@ -1,4 +1,4 @@
-function postmission_data(t, y, cfg)
+ function postmission_data(t, y, cfg)
 % WIP function to show that eclipse is actually happening
 
 [y_interp, t_interp] = interp_mee(y, t, 5000);

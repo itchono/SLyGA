@@ -1,13 +1,13 @@
 % Make sure everything is in workspace before this runs
-casename = mission_cfg.casename;
+casename = cfg.casename;
 
 %% Figures
 hf1 = figure;
-plot_elements_mee(y, t, mission_cfg.y_target);
+plot_elements_mee(y, t, cfg.y_target);
 exportgraphics(hf1, fullfile("outputs", casename, 'orbital_elements.pdf'), 'ContentType', 'vector')
 
 hf2 = figure;
-plot_steering_history(y, t, mission_cfg);
+plot_steering_history(y, t, cfg);
 exportgraphics(hf2, fullfile("outputs", casename, 'steering_history.pdf'), 'ContentType', 'vector')
 
 hf3 = figure;
@@ -17,4 +17,4 @@ exportgraphics(hf3, fullfile("outputs", casename, 'trajectory_plot.png'), ...
     'Resolution', 300)
 
 %% Video
-plot_osculating_mee(y, fullfile("outputs", casename, 'trajectory_animation.mp4'));
+anim_osculating_mee(y, fullfile("outputs", casename, 'trajectory_animation.mp4'));
