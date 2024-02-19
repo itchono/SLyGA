@@ -39,3 +39,10 @@ cfg.casename = "twoleg_2";
 y = [y1 y2(:, 2:end)];
 t = [t1; t2(2:end)];
 dv = [dv1; dv2(2:end)];
+
+
+%% Postprocess hacks
+%eval_last_step(y2, t2, cfg);
+%t = t2;
+%y = y2;
+% postprocess
