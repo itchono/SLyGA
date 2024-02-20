@@ -29,7 +29,7 @@ cfg.y0 = y1(:, end);
 cfg.t_span = [t1(end), t1(end)+1e7];
 cfg.solver = @ode15s;
 cfg.tol = 1e-6;
-cfg.options = odeset('RelTol', 1e-4, 'AbsTol', 1e-8, "Stats", "on", "MaxStep", 1e3);
+cfg.options = odeset('RelTol', 1e-8, 'AbsTol', 1e-8, "Stats", "on", "MaxStep", 1e3);
 cfg.casename = "twoleg_2";
 
 %% Run 2
