@@ -16,30 +16,47 @@ for j = 1:length(t)
     [alpha_f(j), beta_f(j)] = ndf_heuristic(t(j), y(:, j), alpha(j), beta(j), cfg);
 end
 
+%% Rates
+rate_alpha_f = diff(alpha_f) ./ diff(t);
+rate_beta_f = diff(beta_f) ./ diff(t);
+rate_alpha_r = diff(alpha) ./ diff(t);
+rate_beta_r = diff(beta) ./ diff(t);
+
 %% Plot
-subplot(311)
+subplot(221)
 plot(t/86400, rad2deg(alpha), "LineWidth", 1)
 hold on
 plot(t/86400, rad2deg(beta), "LineWidth", 1)
 legend("alpha", "beta")
-ylabel("Steering Angles")
-title("Guidance System Performance")
+ylabel("Q-Law Raw Steering Angles")
 grid
 
 
-subplot(312)
+subplot(222)
 plot(t/86400, rad2deg(alpha_f), "LineWidth", 1)
 hold on
 plot(t/86400, rad2deg(beta_f), "LineWidth", 1)
 legend("Alpha", "Beta")
-ylabel("Adapted Steering Angles")
+ylabel("Adapted (Actual) Steering Angles")
 grid
 
 
-subplot(313)
+subplot(223)
 plot(t/86400, err, "LineWidth", 1)
-legend("Guidance Error")
 ylabel("Guidance Error")
 xlabel("Time since vernal equinox (d)")
 grid
+
+subplot(224)
+semilogy(t(1:end-1)/86400, rad2deg(abs(rate_alpha_f)), "LineWidth", 1)
+hold on
+semilogy(t(1:end-1)/86400, rad2deg(abs(rate_beta_f)), "LineWidth", 1)
+yline(10/3600, "--")
+semilogy(t(1:end-1)/86400, rad2deg(abs(rate_alpha_r)), "--")
+semilogy(t(1:end-1)/86400, rad2deg(abs(rate_beta_r)), "--")
+ylabel("Abs. Steering Rates (rad/s)")
+xlabel("Time since vernal equinox (d)")
+legend("Alpha", "Beta", "10 deg/hr")
+grid
+
 end

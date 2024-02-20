@@ -6,6 +6,7 @@ hf1 = figure;
 plot_elements_mee(y, t, cfg.y_target);
 exportgraphics(hf1, fullfile("outputs", casename, 'orbital_elements.pdf'), 'ContentType', 'vector')
 
+% Split up plots
 hf2 = figure;
 plot_steering_history(y, t, cfg);
 exportgraphics(hf2, fullfile("outputs", casename, 'steering_history.pdf'), 'ContentType', 'vector')

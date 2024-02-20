@@ -1,5 +1,6 @@
 %% Description
 % two leg mission for better convergence?
+% do the second part cartesian!
 
 %% Problem Definition
 % Create a struct for neatness
@@ -21,7 +22,7 @@ cfg.dynamics = "mee";
 cfg.j2 = false;
 
 %% Run 1
-cfg.casename = "twoleg_1";
+cfg.casename = "twoleg_cart_1";
 [y1, t1, dv1] = run_mission(cfg);
 
 %% Modify for second run
@@ -29,8 +30,9 @@ cfg.y0 = y1(:, end);
 cfg.t_span = [t1(end), t1(end)+1e7];
 cfg.solver = @ode15s;
 cfg.tol = 1e-6;
-cfg.options = odeset('RelTol', 1e-4, 'AbsTol', 1e-8, "Stats", "on", "MaxStep", 1e3);
-cfg.casename = "twoleg_2";
+cfg.options = odeset('RelTol', 1e-8, "Stats", "on", "MaxStep", 1e3);
+cfg.dynamics = "cart";
+cfg.casename = "twoleg_cart_2";
 
 %% Run 2
 [y2, t2, dv2] = run_mission(cfg);
