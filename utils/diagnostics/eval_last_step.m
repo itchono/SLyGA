@@ -28,18 +28,24 @@ end
 yp_n = yp ./ max(yp, [], 2);
 
 figure
-subplot(211)
+subplot(311)
 plot(t, yp_n.', "LineWidth", 1)
 legend("p", "f", "g", "h", "k", "Location", "best")
 xlabel("Time (s)")
 grid()
 title("Derivative Trends (relative to max over interval)")
 
-subplot(212)
+subplot(313)
 plot(yp_n.', "LineWidth", 1)
 legend("p", "f", "g", "h", "k", "Location", "best")
 xlabel("Step Number")
 grid()
+
+%% ECLIPSE CALCS
+subplot(312)
+[y_interp, t_interp] = interp_mee(y, t);
+postmission_data(t_interp, y_interp, cfg);
+ylabel("Sunlight (1 or 0)")
 
 figure
 subplot(211)
