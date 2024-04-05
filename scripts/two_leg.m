@@ -1,9 +1,5 @@
 %% Description
-% Benchmark transfer case between two orbits which are very "far" apart
-% Supposed to be a worst-case for the guidance law
-% As of the latest version, we get a performance of 874 revolutions, and
-% about 6.7 km/s of delta-v expenditure using the unpenalized law
-% to within a tolerance of 1e-3; somewhat sesitive to NDF angles
+% two leg mission for better convergence?
 
 %% Problem Definition
 % Create a struct for neatness
@@ -24,6 +20,29 @@ cfg.kappa_f = deg2rad(91);
 cfg.dynamics = "mee";
 cfg.j2 = false;
 
-%% Run
-[~, cfg.casename, ~] = fileparts(mfilename);
-[y, t, dv] = run_mission(cfg);
+%% Run 1
+cfg.casename = "twoleg_1";
+[y1, t1, dv1] = run_mission(cfg);
+
+%% Modify for second run
+cfg.y0 = y1(:, end);
+cfg.t_span = [t1(end), t1(end)+1e7];
+cfg.solver = @ode15s;
+cfg.tol = 1e-6;
+cfg.options = odeset('RelTol', 1e-8, 'AbsTol', 1e-8, "Stats", "on", "MaxStep", 1e3);
+cfg.casename = "twoleg_2";
+
+%% Run 2
+[y2, t2, dv2] = run_mission(cfg);
+
+%% Merge
+y = [y1 y2(:, 2:end)];
+t = [t1; t2(2:end)];
+dv = [dv1; dv2(2:end)];
+
+
+%% Postprocess hacks
+%eval_last_step(y2, t2, cfg);
+%t = t2;
+%y = y2;
+% postprocess

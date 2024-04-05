@@ -15,22 +15,23 @@ Omega_f = -90;
 omega_f = 0;
 
 % Create a struct for neatness
-mission_cfg.y0 = [sma_i * (1 - e_i^2); e_i; 0; 0; 0; 0];
-mission_cfg.y_target = [sma_f * (1 - e_f^2); 0; e_f; 0; -1];
-mission_cfg.propulsion_model = @sail_thrust;
-mission_cfg.steering_law = @lyapunov_steering;
-mission_cfg.solver = @ode89;
-mission_cfg.t_span = [0, 1e8];
-mission_cfg.options = odeset('RelTol', 1e-4, "Stats", "on", "MaxStep", 1e4);
-mission_cfg.tol = 3e-2;
-mission_cfg.guidance_weights = [1; 1; 1; 1; 1];
-mission_cfg.penalty_param = 5;
-mission_cfg.min_pe = 6878e3;
-mission_cfg.penalty_weight = 1;
-mission_cfg.kappa_d = deg2rad(64);
-mission_cfg.kappa_f = deg2rad(91);
-% Set a "MaxStep" of about 1e4 in odeset if you're using ode89 or ode78
+cfg.y0 = [sma_i * (1 - e_i^2); e_i; 0; 0; 0; 0];
+cfg.y_target = [sma_f * (1 - e_f^2); 0; e_f; 0; -1];
+cfg.propulsion_model = @sail_thrust;
+cfg.steering_law = @lyapunov_steering;
+cfg.solver = @ode89;
+cfg.t_span = [0, 1e8];
+cfg.options = odeset('RelTol', 1e-4, "Stats", "on", "MaxStep", 1e4);
+cfg.tol = 3e-2;
+cfg.guidance_weights = [1; 1; 1; 1; 1];
+cfg.penalty_param = 5;
+cfg.min_pe = 6878e3;
+cfg.penalty_weight = 1;
+cfg.kappa_d = deg2rad(64);
+cfg.kappa_f = deg2rad(91);
+cfg.dynamics = "mee";
+cfg.j2 = false;
 
 %% Run
-[~, mission_cfg.casename, ~] = fileparts(mfilename);
-[y, t, dv] = run_mission(mission_cfg);
+[~, cfg.casename, ~] = fileparts(mfilename);
+[y, t, dv] = run_mission(cfg);

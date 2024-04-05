@@ -1,6 +1,5 @@
 %% Description
-% Somewhat difficult case
-%
+% two leg approach to GEO
 
 %% Problem Definition
 % Create a struct for neatness
@@ -21,6 +20,24 @@ cfg.kappa_f = deg2rad(91);
 cfg.dynamics = "mee";
 cfg.j2 = false;
 
-%% Run
-[~, cfg.casename, ~] = fileparts(mfilename);
-[y, t, dv] = run_mission(cfg);
+%% Run 1
+cfg.casename = "geo_twoleg_1";
+[y1, t1, dv1] = run_mission(cfg);
+
+%% Modify for second run
+cfg.y0 = y1(:, end);
+cfg.t_span = [t1(end), t1(end)+1e6];
+cfg.solver = @ode15s;
+cfg.tol = 1e-6;
+cfg.guidance_weights = [1; 2; 2; 0; 0];
+cfg.options = odeset('RelTol', 1e-6, "Stats", "on", "MaxStep", 1e3);
+cfg.casename = "geo_twoleg_2";
+
+%% Run 2
+[y2, t2, dv2] = run_mission(cfg);
+
+%% Merge
+y = [y1 y2(:, 2:end)];
+t = [t1; t2(2:end)];
+dv = [dv1; dv2(2:end)];
+

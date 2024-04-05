@@ -1,10 +1,8 @@
 function plot_quivers(t, y, y_target)
 % plot sail normal, sun direciton, etc
 
-[p, f, g, h, k, L] = unpack_mee(y);
-
 [~, sun_dir_i] = sun_position(t);
-CIO = rot_inertial_LVLH(p, f, g, h, k, L);
+CIO = rot_inertial_LVLH(y);
 COI = CIO';
 
 sun_dir_o = COI * sun_dir_i;

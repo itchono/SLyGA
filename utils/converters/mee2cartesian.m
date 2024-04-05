@@ -1,22 +1,18 @@
-function [pos, vel] = mee2cartesian(p, f, g, h, k, L)
+function cart = mee2cartesian(m)
 % MEE2CARTESIAN converts modified equinoctial elements to cartesian
 % coordinates. The inputs should be vectors or scalars, but all should be
 % the same size. The outputs will be the same size as the inputs.
 %
 %   Inputs:
-%       p - semilatus rectum (m)
-%       f - component of eccentricity vector (1)
-%       g - component of eccentricity vector (1)
-%       h - parameter 1 related to RAAN and inclination (1)
-%       k - parameter 2 related to RAAN and inclination (1)
-%       L - true longitude (rad)
-%
+%       m - modified eqinoctial elements (m, rad)
 %   Outputs:
-%       pos - position in cartesian coordinates (m)
-%       vel - velocity in cartesian coordinates (m)
+%       cart - position/velocity in cartesian coordinates (m, m/s)
 
 % formulation from
 % https://spsweb.fltops.jpl.nasa.gov/portaldataops/mpg/MPG_Docs/Source%20Docs/EquinoctalElements-modified.pdf
+
+% unpack elements
+[p, f, g, h, k, L] = unpack_mee(m);
 
 % Work with alpha and s squared instead of alpha and s (sqrt'ed), because
 % sometimes these values can be less than zero, causing issues (we want to
@@ -32,7 +28,9 @@ pos = r ./ (s_sq) .* [cos(L) + alpha_sq .* cos(L) + 2 * h .* k .* sin(L); ...
 mu = 3.986e14;
 
 vel = 1 ./ s_sq .* sqrt(mu./p) .* [-(sin(L) + alpha_sq .* sin(L) - 2 .* h .* k .* cos(L) + g - 2 .* f .* h .* k + alpha_sq .* g); ...
-    -(-cos(L) + alpha_sq .* cos(L) + 2 .* h .* k .* sin(L) - g + 2 .* g .* h .* k + alpha_sq .* f); ...
+    -(-cos(L) + alpha_sq .* cos(L) + 2 .* h .* k .* sin(L) - f + 2 .* g .* h .* k + alpha_sq .* f); ...
     2 .* (h .* cos(L) + k .* sin(L) + f .* h + g .* k)];
+
+cart = [pos; vel];
 
 end

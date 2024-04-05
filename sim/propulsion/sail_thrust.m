@@ -14,14 +14,13 @@ function acc_lvlh = sail_thrust(t, y, alpha, beta)
 %       acc_lvlh    Acceleration vector (m/s^2)
 %
 
-[p, f, g, h, k, L] = unpack_mee(y);
-
-r_spacecraft_i = mee2cartesian(p, f, g, h, k, L);
+r_spacecraft_i = mee2cartesian(y);
+r_spacecraft_i = r_spacecraft_i(1:3);
 
 
 % Calculate Cone Angle/Occlusion
 sc_dir_lvlh = steering2lvlh(alpha, beta);
-sc_dir_i = rot_inertial_LVLH(p, f, g, h, k, L) * sc_dir_lvlh;
+sc_dir_i = rot_inertial_LVLH(y) * sc_dir_lvlh;
 [r_sun_i, u_sun_i] = sun_position(t);
 sunlight_dir_i = -u_sun_i;
 c_cone_ang = dot(sc_dir_i, sunlight_dir_i);

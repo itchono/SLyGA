@@ -28,7 +28,6 @@ function [y, t, dv] = run_mission(cfg)
 %
 
 %% Pre-Run
-
 % filesystem
 [~, ~, ~] = mkdir("outputs");
 mkdir(fullfile("outputs", cfg.casename));
@@ -45,54 +44,38 @@ fprintf(" ________  ___           ___    ___ ________  ________     \n|\\   ____
 print_cfg_summary(cfg) % print out mission info
 
 % Set up termination conditions
-options = odeset(cfg.options, 'Events', @(t, y) mee_convergence(t, y, cfg));
-
-% Scale initial conditions
-cfg.y0 = [cfg.y0(1) / 6378e3; cfg.y0(2:end)];
+if cfg.dynamics == "cartesian"
+    options = odeset(cfg.options, 'Events', @(t, y) cartesian_convergence(t, y, cfg));
+    % No scaling for Cartesian
+    ode = @(t, y) dyn_cartesian(t, y, cfg);
+    % Convert to Cartesian
+    cfg.y0 = mee2cartesian(cfg.y0);
+else
+    options = odeset(cfg.options, 'Events', @(t, y) mee_convergence(t, y, cfg));
+    cfg.y0 = [cfg.y0(1) / 6378e3; cfg.y0(2:end)];
+    % Scale initial conditions for MEE
+    ode = @(t, y) dyn_mee(t, y, cfg);
+end
 
 %% Run
 tic;
-ode = @(t, y) slyga_ode(t, y, cfg);
 [t, y_raw] = cfg.solver(ode, cfg.t_span, [cfg.y0; 0], options);
 
 % post-processing scaling and reprocessing
 y = y_raw(:, 1:6)';
-y(1, :) = y(1, :) * 6378e3;
+if cfg.dynamics == "cartesian"
+    % convert to MEE
+    y(1:6, :) = cartesian2mee(y(1:6, :));
+else
+    % rescale MEE
+    y(1, :) = y(1, :) * 6378e3;
+end
 dv = y_raw(:, 7);
+
 
 %% Post-run
 time_elapsed = toc;
-fprintf("FINISHED in %.2f seconds (compute)\n", time_elapsed);
-print_mission_summary(y, t, dv, cfg)
-
-end
-
-function yp = slyga_ode(t, y, cfg)
-% SLYGA_ODE governinig ODE for SLyGA Simulations
-%   YP = SLYGA_ODE(T, Y, CFG) returns
-%   the time derivative in modified equinoctial elements for the state
-%   vector Y at time T.
-
-%   State is 7x1, 6 for orbital elements and 1 for dv
-
-% Scaling, for error tolerance only (guidance law does scaling internally,
-% so we feed it in the unscaled values)
-y = [y(1) * 6378e3; y(2:end)];
-
-% GNC
-[alpha, beta] = cfg.steering_law(t, y, cfg);
-
-% Adjust targeted steering angle if needed
-if func2str(cfg.propulsion_model) == "sail_thrust"
-    [alpha, beta] = ndf_heuristic(t, y, alpha, beta, cfg);
-end
-
-% Propulsion
-acceleration = cfg.propulsion_model(t, y, alpha, beta);
-
-% Dynamics
-yp = [gve_mee(y, acceleration); norm(acceleration)];
-yp(1) = yp(1) / 6378e3;
+print_mission_summary(y, t, dv, cfg, time_elapsed)
 
 end
 
@@ -101,6 +84,14 @@ function [value, isterminal, direction] = mee_convergence(~, y, cfg)
 % target
 y(1) = y(1) * 6378e3;
 value = steering_loss(y, cfg.y_target, cfg.guidance_weights) - cfg.tol;
+isterminal = 1;
+direction = 0;
+end
+
+function [value, isterminal, direction] = cartesian_convergence(~, y, cfg)
+y_mee = cartesian2mee(y);
+
+value = steering_loss(y_mee, cfg.y_target, cfg.guidance_weights) - cfg.tol;
 isterminal = 1;
 direction = 0;
 end
