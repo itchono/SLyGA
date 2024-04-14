@@ -41,7 +41,7 @@ xlabel("Elapsed Time (Days)")
 linkaxes([ax1, ax2],'x')
 
 % Tight xlim and final 
-for aa = [ax1, ax2, ax3]
+for aa = [ax1, ax2]
     xt = xticks(aa);
     xt(end) = round(max(days));
     xlim(aa, [min(days), max(days)+1])
