@@ -13,11 +13,6 @@ y_mee = cartesian2mee(y);
 % GNC
 [alpha, beta] = cfg.steering_law(t, y_mee, cfg);
 
-% Adjust targeted steering angle if needed
-if func2str(cfg.propulsion_model) == "sail_thrust"
-    [alpha, beta] = ndf_heuristic(t, y_mee, alpha, beta, cfg);
-end
-
 % Propulsion
 acceleration = cfg.propulsion_model(t, y, alpha, beta);
 if cfg.j2

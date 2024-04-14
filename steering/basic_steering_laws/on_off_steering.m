@@ -1,5 +1,6 @@
 function [alpha, beta] = on_off_steering(t, y, ~)
 % Reference steering law from McInnes 4.4.2.1; to debug simulator
+% Untested in 3D sims; used only early on in development
 
 [~, ~, ~, ~, ~, L] = unpack_mee(y);
 phi_sun = sun_angle(t);

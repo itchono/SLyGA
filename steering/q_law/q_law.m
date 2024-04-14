@@ -1,7 +1,7 @@
-function [alpha, beta] = lyapunov_steering(t, y, cfg)
-% LYAPUNOV_STEERING  Steering law for Lyapunov control WITH PENALTY
+function [alpha, beta] = q_law(t, y, cfg)
+% Q_LAW  Steering law for Lyapunov control WITH PENALTY
 %
-%   [alpha, beta] = lyapunov_steering(t, y, y_tgt)
+%   [alpha, beta] = q_law(t, y, y_tgt)
 %
 % Inputs:
 %   t = current time

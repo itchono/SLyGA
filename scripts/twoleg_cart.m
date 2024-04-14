@@ -7,7 +7,7 @@
 cfg.y0 = [20000e3; 0.5; -0.2; 0.5; 0; 0];
 cfg.y_target = [25000e3; 0.2; 0.5; 0; 0.3];
 cfg.propulsion_model = @sail_thrust;
-cfg.steering_law = @lyapunov_steering;
+cfg.steering_law = @quail;
 cfg.solver = @ode89;
 cfg.t_span = [0, 1e8];
 cfg.options = odeset('RelTol', 1e-4, "Stats", "on", "MaxStep", 1e4);

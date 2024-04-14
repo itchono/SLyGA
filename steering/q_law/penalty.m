@@ -1,5 +1,16 @@
 function [P, dPdy] = penalty(y, pen_param, rpmin)
-% k is a penalty scaling parameter, not to be confused with the MEE value k
+% PENALTY  Calculate the penalty function and its partials
+%  [P, dPdy] = penalty(y, pen_param, rpmin) calculates the penalty function
+%  and its partials with respect to the state vector y
+%
+% Inputs:
+%  y - state vector
+%  pen_param - penalty scaling parameter
+%  rpmin - minimum periapsis radius
+%
+% Outputs:
+%  P - penalty function
+%  dPdy - partials of the penalty function with respect to the state vector y
 
 [p, f, g, ~, ~, ~] = unpack_mee(y);
 
