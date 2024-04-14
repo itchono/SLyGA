@@ -27,10 +27,17 @@ cfg.guidance_weights = [1; 1; 1; 1; 1];
 cfg.penalty_param = 5;
 cfg.min_pe = 6878e3;
 cfg.penalty_weight = 1;
-cfg.kappa = deg2rad(90);
+cfg.kappa = deg2rad(50);
 cfg.dynamics = "mee";
 cfg.j2 = false;
 
 %% Run
 [~, cfg.casename, ~] = fileparts(mfilename);
-[y, t, dv] = run_mission(cfg);
+k_range = 90:-10:10;
+tofs = zeros(length(k_range), 1);
+
+for i = 1:length(k_range)
+    cfg.kappa = deg2rad(k_range(i));
+    [~, t, ~] = run_mission(cfg);
+    tofs(i) = t(end);
+end
