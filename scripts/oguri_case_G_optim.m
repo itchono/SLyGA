@@ -27,8 +27,7 @@ cfg.guidance_weights = [8.95875083; 2.13158038; 1.72204813; 3.55941979; 9.788298
 cfg.penalty_param = 5;
 cfg.min_pe = 6878e3;
 cfg.penalty_weight = 1;
-cfg.kappa_d = deg2rad(64);
-cfg.kappa_f = deg2rad(91);
+cfg.kappa = deg2rad(64);
 cfg.dynamics = "mee";
 cfg.j2 = false;
 
