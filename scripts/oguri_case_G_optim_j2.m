@@ -18,19 +18,18 @@ omega_f = 0;
 cfg.y0 = [sma_i * (1 - e_i^2); e_i; 0; 0; 0; 0];
 cfg.y_target = [sma_f * (1 - e_f^2); 0; e_f; 0; -1];
 cfg.propulsion_model = @sail_thrust;
-cfg.steering_law = @lyapunov_steering;
+cfg.steering_law = @quail;
 cfg.solver = @ode89;
 cfg.t_span = [0, 1e8];
 cfg.options = odeset('RelTol', 1e-4, "Stats", "on", "MaxStep", 1e4);
 cfg.tol = 3e-2;
-cfg.guidance_weights = [1; 1; 1; 1; 1];
+cfg.guidance_weights = [8.95875083; 2.13158038; 1.72204813; 3.55941979; 9.78829853];
 cfg.penalty_param = 5;
 cfg.min_pe = 6878e3;
 cfg.penalty_weight = 1;
-cfg.kappa_d = deg2rad(90);
-cfg.kappa_f = deg2rad(91);
+cfg.kappa = deg2rad(64);
 cfg.dynamics = "mee";
-cfg.j2 = false;
+cfg.j2 = true;
 
 %% Run
 [~, cfg.casename, ~] = fileparts(mfilename);

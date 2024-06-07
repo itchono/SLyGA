@@ -1,4 +1,16 @@
 function eval_last_step(y, t, cfg, n_eval)
+% EVAL_LAST_STEP  Evaluate the last n_eval steps of a simulation
+%   eval_last_step(y, t, cfg, n_eval) evaluates the last n_eval steps of a
+%   simulation and plots the trends of the MEE derivatives. It also plots
+%   the eclipse data.
+%
+% Inputs:
+%   y = state vector
+%   t = time vector
+%   cfg = configuration struct
+%   n_eval = number of steps to evaluate (default: all)
+
+% Used only as a diagnostic tool, not for publication-grade figures
 
 if nargin < 4
     n_eval = length(t);

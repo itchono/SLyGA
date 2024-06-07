@@ -11,3 +11,6 @@ resources/**
 *.mp4
 *.xml
 *.txt
+
+# Animations
+anim

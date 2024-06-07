@@ -1,4 +1,4 @@
-function imseq_fancy(y, save_path, nfmax, view_dim)
+function imseq_fancy(y, cfg, nfmax, view_dim)
 % Expect y to be (6, N)
 % no need to interpolate vectors unless you have VERY big skips in L
 % Reference: https://www.mathworks.com/help/matlab/ref/getframe.html
@@ -42,9 +42,8 @@ axis equal
 view(view_dim)
 
 %% Initialize path
-workingDir = save_path;
-mkdir(workingDir)
-mkdir(workingDir,"images")
+mkdir("anim")
+mkdir("anim", cfg.casename)
 
 %% Animation
 % spacing; never plot more than 20 frames
@@ -68,7 +67,8 @@ for j = [1:stride:num_orbits, num_orbits]
     
     % Draw and get frame
     drawnow
-    exportgraphics(gcf, fullfile(workingDir,"images",sprintf("anim-%d.png", ii)))
+    % Use saveas instead of exportgraphics to maintain stable size
+    saveas(gcf, fullfile("anim",cfg.casename,sprintf("anim-%d.jpg", ii)))
     ii = ii + 1; % JANK but works
 end
 end

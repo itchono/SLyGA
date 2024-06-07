@@ -48,13 +48,16 @@ linkaxes([ax1, ax2, ax3],'x')
 
 % Tight xlim and final 
 for aa = [ax1, ax2, ax3]
-    xlim(aa, [min(days), max(days)])
-    xticks(aa, [xticks, round(max(days))])
+    xt = xticks(aa);
+    xt(end) = round(max(days));
+    xlim(aa, [min(days), max(days)+1])
+    xticks(aa, xt);
 end
 
 % Top label
 set(ax1,'XAxisLocation','top')
-converted_values = floor(interp1(t, L, xticks*86400, "linear", "extrap") /(2 * pi));
+converted_values = floor(interp1(t, L, xt*86400, "linear", "extrap") /(2 * pi));
 set(ax1, "XTickLabels", converted_values);
+xticks(ax1, xt)
 xlabel(ax1,'Orbit Number')
 end

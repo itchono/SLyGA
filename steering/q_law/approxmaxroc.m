@@ -1,6 +1,15 @@
 function maxroc = approxmaxroc(y)
-% Approximate maximum rates of change of each element across all steering
-% angles and true longitudes, based on Petropoulos' 2004 paper.
+% APPROXMAXROC  Approximate maximum rates of change of each element across
+% all steering angles and true longitudes
+%   maxroc = approxmaxroc(y) calculates the approximate maximum rates of
+%   change of each element across all steering angles and true longitudes
+%   based on Petropoulos' 2004 paper.
+%
+% Inputs:
+%   y = state vector
+%
+% Outputs:
+%   maxroc = approximate maximum rates of change (d_p, d_f, d_g, d_h, d_k)
 
 [p, f, g, h, k, L] = unpack_mee(y);
 

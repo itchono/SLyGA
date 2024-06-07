@@ -1,6 +1,13 @@
 function Q = func_Q(y, cfg)
 % FUNC_Q compute the Q potential function for a given state
-% y is state in MEE
+%  Q = FUNC_Q(y, cfg) computes the Q potential function for a given state
+%
+% Inputs:
+%  y - state vector (MEE)
+%  cfg - configuration struct
+%
+% Outputs:
+%  Q - Q potential function value
 
 [P, ~] = penalty(y, cfg.penalty_param, cfg.min_pe);
 

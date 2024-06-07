@@ -2,6 +2,10 @@ function m = cartesian2mee(cart)
 % CARTESIAN2MEE converts cartesian coordinates to modified equinoctial
 % elements. The inputs should be h-stacked vectors, and all be
 % the same size. The outputs will be the same size as the inputs.
+% Inputs:
+%   cart = [6 x n] array of cartesian coordinates
+% Outputs:
+%   m = [6 x n] array of modified equinoctial elements
 
 mu = 3.986e14;
 pos = cart(1:3, :);

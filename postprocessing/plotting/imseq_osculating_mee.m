@@ -62,7 +62,7 @@ for j = [1:stride:num_orbits, num_orbits]
     
     % Draw and get frame
     drawnow
-    exportgraphics(gcf, fullfile(workingDir,"images",sprintf("anim-%d.png", ii)))
+    saveas(gcf, fullfile(workingDir,"images",sprintf("anim-%d.png", ii)))
     ii = ii + 1; % JANK but works
 end
 end

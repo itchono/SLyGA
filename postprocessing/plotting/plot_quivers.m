@@ -8,12 +8,12 @@ COI = CIO';
 sun_dir_o = COI * sun_dir_i;
 
 % GNC
-[alpha, beta] = lyapunov_steering(t, y, y_target);
+[alpha, beta] = q_law(t, y, y_target);
 
 n_lyapunov_o = steering2lvlh(alpha, beta);
 
 % Adjust targeted steering angle if needed
-[alpha, beta] = ndf_heuristic(t, y, alpha, beta);
+[alpha, beta] = cone_adaptation(t, y, alpha, beta);
 
 n_ndf_o = steering2lvlh(alpha, beta);
 
