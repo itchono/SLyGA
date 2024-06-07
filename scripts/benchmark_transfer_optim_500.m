@@ -1,9 +1,5 @@
 %% Description
-% Benchmark transfer case between two orbits which are very "far" apart
-% Supposed to be a worst-case for the guidance law
-% As of the latest version, we get a performance of 874 revolutions, and
-% about 6.7 km/s of delta-v expenditure using the unpenalized law
-% to within a tolerance of 1e-3; somewhat sensitive to NDF angles
+% Version of benchmark transfer with optimized weights
 
 %% Problem Definition
 % Create a struct for neatness
@@ -14,12 +10,13 @@ cfg.steering_law = @quail;
 cfg.solver = @ode89;
 cfg.t_span = [0, 1e8];
 cfg.options = odeset('RelTol', 1e-4, "Stats", "on", "MaxStep", 1e4);
-cfg.tol = 5e-3;
-cfg.guidance_weights = [1; 1; 1; 1; 1];
+cfg.tol = 1e-2;
+cfg.guidance_weights = [ 6.827e-01;  9.304e-01;  1.111e+00;  3.386e+00;
+        	8.306e+00 ];
 cfg.penalty_param = 1;
 cfg.min_pe = 10000e3;
 cfg.penalty_weight = 0;
-cfg.kappa = deg2rad(64);
+cfg.kappa = deg2rad(62.51);
 cfg.dynamics = "mee";
 cfg.j2 = false;
 

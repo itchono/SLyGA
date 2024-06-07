@@ -23,11 +23,12 @@ cfg.solver = @ode89;
 cfg.t_span = [0, 1e8];
 cfg.options = odeset('RelTol', 1e-4, "Stats", "on", "MaxStep", 1e4);
 cfg.tol = 3e-2;
-cfg.guidance_weights = [5.68800023; 1.17835507; 1.43411676; 3.54479675; 5.56758164];
+cfg.guidance_weights = [1.184e+00;  2.485e+00;  9.895e+00;  9.747e+00;
+        	2.188e+00];
 cfg.penalty_param = 5;
 cfg.min_pe = 6878e3;
 cfg.penalty_weight = 1;
-cfg.kappa = deg2rad(64);
+cfg.kappa = deg2rad(67.8);
 cfg.dynamics = "mee";
 cfg.j2 = false;
 
