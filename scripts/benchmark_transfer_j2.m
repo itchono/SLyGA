@@ -1,5 +1,5 @@
 %% Description
-% J2 version of benchmark transfer
+% Determine effects of J2 on benchmark transfer
 
 %% Problem Definition
 % Create a struct for neatness
@@ -10,7 +10,7 @@ cfg.steering_law = @quail;
 cfg.solver = @ode89;
 cfg.t_span = [0, 1e8];
 cfg.options = odeset('RelTol', 1e-4, "Stats", "on", "MaxStep", 1e4);
-cfg.tol = 1e-3;
+cfg.tol = 5e-3;
 cfg.guidance_weights = [1; 1; 1; 1; 1];
 cfg.penalty_param = 1;
 cfg.min_pe = 10000e3;
