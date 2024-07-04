@@ -33,7 +33,7 @@ for j = [1:stride:num_orbits, num_orbits]
     plot3(cart_sample(1, :), cart_sample(2, :), cart_sample(3, :), "Color", cm(colour_idx, :), "LineWidth", 0.5);
 end
 
-title(sprintf("Earth Inertial Coordinates (showing every %d orbits)", stride));
+title(sprintf("Earth Inertial Coordinates (Showing Every %d Orbits)", stride));
 xlabel("x (m)")
 ylabel("y (m)")
 zlabel("z (m)")
