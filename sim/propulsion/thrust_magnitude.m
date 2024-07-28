@@ -5,7 +5,7 @@ function T = thrust_magnitude
 
 % Sail/Sun parameters
 P = 4.56e-6; % N/m^2
-sigma = 0.002; % kg/m^2
+sigma = 0.005; % kg/m^2
 eta = 0.85;
 
 T = 2 * P * eta / sigma;

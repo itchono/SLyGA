@@ -69,11 +69,13 @@ for j = [1:stride:num_orbits, num_orbits]
     % Draw and get frame
     drawnow
 
-    % https://www.mathworks.com/matlabcentral/answers/1615265-physical-size-of-exportgraphics
+    % https://www.mathworks.com/matlabcentral/answers/363832-some-figures-not-saving-as-vector-graphics-svg
+    % https://www.mathworks.com/matlabcentral/answers/471164-print-pdf-to-a-specific-size
     hf = gcf;
-    set(hf, 'Units', 'centimeters',...
-          'OuterPosition', [4 4 12 12])
-    exportgraphics(hf, fullfile("anim", cfg.casename, sprintf("anim-%d.pdf", ii)), 'ContentType', 'vector')
+    hf.Units = 'centimeters';        % set figure units to cm
+    hf.PaperUnits = 'centimeters';   % set pdf printing paper units to cm
+    hf.PaperSize = hf.Position(3:4);  % assign to the pdf printing paper the size of the figure
+    print(hf,'-vector','-dpdf',fullfile("anim", cfg.casename, sprintf("anim-%d.pdf", ii))) % pdf
     ii = ii + 1; % JANK but works
 end
 end
