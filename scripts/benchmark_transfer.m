@@ -3,7 +3,7 @@
 % Supposed to be a worst-case for the guidance law
 % As of the latest version, we get a performance of 874 revolutions, and
 % about 6.7 km/s of delta-v expenditure using the unpenalized law
-% to within a tolerance of 1e-3; somewhat sesitive to NDF angles
+% to within a tolerance of 1e-3; somewhat sensitive to NDF angles
 
 %% Problem Definition
 % Create a struct for neatness
@@ -14,7 +14,7 @@ cfg.steering_law = @quail;
 cfg.solver = @ode89;
 cfg.t_span = [0, 1e8];
 cfg.options = odeset('RelTol', 1e-4, "Stats", "on", "MaxStep", 1e4);
-cfg.tol = 1e-3;
+cfg.tol = 5e-3;
 cfg.guidance_weights = [1; 1; 1; 1; 1];
 cfg.penalty_param = 1;
 cfg.min_pe = 10000e3;

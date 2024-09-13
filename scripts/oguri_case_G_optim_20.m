@@ -20,14 +20,14 @@ cfg.y_target = [sma_f * (1 - e_f^2); 0; e_f; 0; -1];
 cfg.propulsion_model = @sail_thrust;
 cfg.steering_law = @quail;
 cfg.solver = @ode89;
-cfg.t_span = [0, 1e8];
+cfg.t_span = [0, 1e9];
 cfg.options = odeset('RelTol', 1e-4, "Stats", "on", "MaxStep", 1e4);
 cfg.tol = 3e-2;
-cfg.guidance_weights = [5.68800023; 1.17835507; 1.43411676; 3.54479675; 5.56758164];
+cfg.guidance_weights = [0.93754074;  0.67942433;  6.74414411;  9.49554798;  4.64909921];
 cfg.penalty_param = 5;
 cfg.min_pe = 6878e3;
 cfg.penalty_weight = 1;
-cfg.kappa = deg2rad(64);
+cfg.kappa = deg2rad(55.136);
 cfg.dynamics = "mee";
 cfg.j2 = false;
 

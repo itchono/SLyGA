@@ -72,6 +72,8 @@ else
 end
 dv = y_raw(:, 7);
 
+% write variables (so we can postprocess in the future)
+save(fullfile("outputs", cfg.casename, 'workspace.mat'), "cfg", "dv", "t", "y")
 
 %% Post-run
 time_elapsed = toc;
