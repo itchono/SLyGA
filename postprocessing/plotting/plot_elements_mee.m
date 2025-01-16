@@ -6,6 +6,7 @@ days = t/86400;
 % size
 fh = gcf();
 fh.Position(3:4) = [560, 600];
+fh.Position(2) = 50;
 
 % Plots orbital elements in stacked plots
 tiledlayout(3, 1, 'TileSpacing', 'tight');

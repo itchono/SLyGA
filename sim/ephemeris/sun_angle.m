@@ -6,6 +6,6 @@ function lambda = sun_angle(t)
 % In the future, replace with a better equation of time
 
 T_sun = 31557600; % seconds in a year
-lambda = 2 * pi * t / T_sun;
+lambda = 2 * pi * t / T_sun + pi;
 
 end

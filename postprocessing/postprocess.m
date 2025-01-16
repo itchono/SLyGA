@@ -7,9 +7,9 @@ plot_elements_mee(y, t, cfg.y_target);
 exportgraphics(hf1, fullfile("outputs", casename, 'orbital_elements.pdf'), 'ContentType', 'vector')
 
 % KE plot is not very critical
-% hf2 = figure;
-% plot_elements_ke(y, t, cfg.y_target);
-% exportgraphics(hf2, fullfile("outputs", casename, 'orbital_elements_ke.pdf'), 'ContentType', 'vector')
+hf2 = figure;
+plot_elements_ke(y, t, cfg.y_target);
+exportgraphics(hf2, fullfile("outputs", casename, 'orbital_elements_ke.pdf'), 'ContentType', 'vector')
 
 % old plot - nothing very useful came of it for production purposes
 % hf3 = figure;
