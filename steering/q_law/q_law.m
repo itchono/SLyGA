@@ -12,7 +12,6 @@ function [alpha, beta] = q_law(t, y, cfg)
 %   [alpha, beta] = steering angles
 
 % scalings
-S = [1 ./ 6378e3; 1; 1; 1; 1];
 [A, ~, ~] = gve_coeffs(y);
 d_oe_max = approxmaxroc(y);
 oe = y(1:5);
@@ -20,13 +19,16 @@ oe_hat = cfg.y_target;
 
 % Calculate penalty and "classic" components separately
 [P, dPdoe] = penalty(y, cfg.penalty_param, cfg.min_pe);
-Xi_P = dPdoe .* ((oe - oe_hat) ./ d_oe_max).^2;
-Xi_E = 2 .* (oe - oe_hat) ./ d_oe_max;
-w_p = cfg.penalty_weight;
+w_pen = cfg.penalty_weight;
+Xi_P = w_pen * dPdoe .* (oe - oe_hat).^2 ./ d_oe_max.^2;
+Xi_Q = (oe - oe_hat) ./ d_oe_max.^2;
+Xi_R = (oe - oe_hat).^2 ./ d_oe_max.^3 .* doexxdoe(y);
+
+W = cfg.guidance_weights;
 
 % Bring together the components
 A = A(1:5, :);
-D = A.' * (cfg.guidance_weights .* S .* (w_p * Xi_P + (1 + w_p * P) .* Xi_E));
+D = A.' * (W .* (Xi_P + 2 .* (1 + w_pen * P) .* (Xi_Q + Xi_R)));
 
 % Optimal steering angles)
 alpha = atan2(-D(1), -D(2));
