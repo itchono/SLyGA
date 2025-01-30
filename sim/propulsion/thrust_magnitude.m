@@ -6,13 +6,13 @@ function T = thrust_magnitude
 % Sail/Sun parameters
 P = 4.56e-6; % N/m^2
 
+eta = 0.85;
+
 % BASE SIMS
-% sigma = 0.005; % kg/m^2
-% eta = 0.85;
+sigma = 0.005; % kg/m^2
 
 % CASE E
-eta = 1;
-sigma = 1/(5.4e2);
+% sigma = 0.0018457;
 
 T = 2 * P * eta / sigma;
 end

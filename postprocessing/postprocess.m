@@ -12,9 +12,9 @@ plot_elements_ke(y, t, cfg.y_target);
 exportgraphics(hf2, fullfile("outputs", casename, 'orbital_elements_ke.pdf'), 'ContentType', 'vector')
 
 % old plot - nothing very useful came of it for production purposes
-% hf3 = figure;
-% plot_steering_history(y, t, cfg);
-% exportgraphics(hf3, fullfile("outputs", casename, 'steering_history.pdf'), 'ContentType', 'vector')
+hf3 = figure;
+plot_steering_history(y, t, cfg);
+exportgraphics(hf3, fullfile("outputs", casename, 'steering_history.pdf'), 'ContentType', 'vector')
 
 % bitmap plot superceded by vector output
 % hf4 = figure;
