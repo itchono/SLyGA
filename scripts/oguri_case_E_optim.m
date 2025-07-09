@@ -1,10 +1,10 @@
 %% Description
-% Oguri case G
+% Oguri case E
 
 %% Problem Definition
 sma_i = 24505.9e3;
 e_i = 0.725;
-i_i = 7.05;
+i_i = 0.06;
 Omega_i = 0;
 omega_i = 0;
 p_i = sma_i * (1-e_i^2);
@@ -13,32 +13,32 @@ g_i = e_i * sind(Omega_i + omega_i);
 h_i = tand(i_i/2)*cosd(Omega_i);
 k_i = tand(i_i/2)*sind(Omega_i);
 
-sma_f = 42165e3;
-e_f = 0.001;
-i_f = 90;
-Omega_f = -90;
-omega_f = 0;
+sma_f = 26553.0e3;
+e_f = 0.737;
+i_f = 63.4;
+Omega_f = 90;
+omega_f = 270;
 p_f = sma_f * (1-e_f^2);
 f_f = e_f * cosd(Omega_f + omega_f);
 g_f = e_f * sind(Omega_f + omega_f);
 h_f = tand(i_f/2)*cosd(Omega_f);
 k_f = tand(i_f/2)*sind(Omega_f);
 
-
 % Create a struct for neatness
-cfg.y0 = [sma_i * (1 - e_i^2); e_i; 0; 0; 0; 0];
-cfg.y_target = [sma_f * (1 - e_f^2); 0; e_f; 0; -1];
+cfg.y0 = [p_i; f_i; g_i; h_i; k_i; 0];
+cfg.y_target = [p_f; f_f; g_f; h_f; k_f];
 cfg.propulsion_model = @sail_thrust;
 cfg.steering_law = @quail;
-cfg.solver = @ode89;
+cfg.solver = @ode45;
 cfg.t_span = [0, 1e8];
-cfg.options = odeset('RelTol', 1e-4, "Stats", "on", "MaxStep", 1e4);
-cfg.tol = 3e-2;
-cfg.guidance_weights = [1; 1; 1; 1; 1];
-cfg.penalty_param = 5;
-cfg.min_pe = 6878e3;
+cfg.options = odeset('RelTol', 1e-8, "Stats", "on", "MaxStep", 1e4);
+cfg.tol = 5e-2;
+cfg.guidance_weights = [ 2.566e+00 ; 8.522e-01 ; 9.730e+00;  2.056e+00;
+            8.268e+00];
+cfg.penalty_param = 10;
+cfg.min_pe = 6578e3;
 cfg.penalty_weight = 1;
-cfg.kappa = deg2rad(64);
+cfg.kappa = deg2rad(61.19);
 cfg.dynamics = "mee";
 cfg.j2 = false;
 

@@ -40,5 +40,5 @@ end
 d_h_max = 1 / 2 .* sqrt(p./mu) .* (1 + h.^2 + k.^2) ./ d1;
 d_k_max = 1 / 2 .* sqrt(p./mu) .* (1 + h.^2 + k.^2) ./ d2;
 
-maxroc = [d_p_max; d_f_max; d_g_max; d_h_max; d_k_max] ./ thrust_magnitude;
+maxroc = [d_p_max; d_f_max; d_g_max; d_h_max; d_k_max] .* thrust_magnitude;
 end
